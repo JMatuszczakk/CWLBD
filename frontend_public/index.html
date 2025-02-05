@@ -88,7 +88,6 @@
             fetch('https://api.cwlbelchatow.nl/api/dogs')
                 .then(response => response.json())
                 .then(dogs => {
-                    const galleryContainer = document.getElementById('galleryContainer');
                     // Stwórz karty psów
                     dogs.forEach(dog => {
                         const dogCard = document.createElement('div');
