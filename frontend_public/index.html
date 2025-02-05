@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CWLB - Przygarnij Futrzastego Przyjaciela</title>
+    <title>CWLB</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-        
+
         body {
             font-family: 'Poppins', sans-serif;
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -48,7 +49,7 @@
     <div class="container mx-auto px-4 py-8 relative">
         <div class="absolute top-4 right-4 flex space-x-4">
             <button>
-                <img src="\serce1.png" alt="Serce" class="w-8 h-8">
+                <img src="/serce1.png" alt="Serce" class="w-8 h-auto">
             </button>
             <button class="text-gray-700 text-3xl">🛒</button>
         </div>
@@ -82,21 +83,8 @@
             const modal = document.getElementById('dog-modal');
             const modalDetails = document.getElementById('dog-details');
             const closeBtn = document.querySelector('.close-btn');
-            
-            // Zmiana obrazu serca po kliknięciu
-            const heartButton = document.getElementById('heart-button');
-            const heartImage = document.getElementById('heart-image');
-            let isHeartFilled = false;
-            
-            heartButton.addEventListener('click', () => {
-                if (isHeartFilled) {
-                    heartImage.src = '/serce1.png';
-                } else {
-                    heartImage.src = '/serce2.png';
-                }
-                isHeartFilled = !isHeartFilled;
-            });
-            
+
+
             fetch('https://api.cwlbelchatow.nl/api/dogs')
                 .then(response => response.json())
                 .then(dogs => {
@@ -133,8 +121,9 @@
                                     <p><strong>Numer ID:</strong> ${dog.number}</p>
                                     <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
                                     <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
-                                    <button id="heart-button" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img id="heart-image" src="/serce1.png" alt="Serce" class="w-8 h-auto">
+                                    <button class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
+                                        <img src="/serce2.png" alt="Serce" class="w-8 h-auto">
+                                    </button>
                                     </button>
                                 </div>
                             `;
@@ -153,10 +142,12 @@
                     `;
                 });
 
+            // Zamknij modal po kliknięciu przycisku zamknięcia
             closeBtn.addEventListener('click', () => {
                 modal.style.display = 'none';
             });
-            
+
+            // Zamknij modal po kliknięciu poza nim
             window.addEventListener('click', (event) => {
                 if (event.target === modal) {
                     modal.style.display = 'none';
