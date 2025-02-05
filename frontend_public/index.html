@@ -48,8 +48,8 @@
 <body class="bg-blue-100">
     <div class="container mx-auto px-4 py-8 relative">
         <div class="absolute top-4 right-4 flex space-x-4">
-            <button>
-                <img src="/serce1.png" alt="Serce" class="w-8 h-auto">
+            <button id="heart-button">
+                <img id="heart-icon" src="/serce1.png" alt="Serce" class="w-8 h-auto">
             </button>
             <button class="text-gray-700 text-3xl">🛒</button>
         </div>
@@ -83,7 +83,16 @@
             const modal = document.getElementById('dog-modal');
             const modalDetails = document.getElementById('dog-details');
             const closeBtn = document.querySelector('.close-btn');
+            const heartButton = document.getElementById('heart-button');
+            const heartIcon = document.getElementById('heart-icon');
 
+            heartButton.addEventListener('click', function () {
+                if (heartIcon.src.includes('serce1.png')) {
+                    heartIcon.src = '/serce2.png';
+                } else {
+                    heartIcon.src = '/serce1.png';
+                }
+            });
 
             fetch('https://api.cwlbelchatow.nl/api/dogs')
                 .then(response => response.json())
@@ -121,10 +130,6 @@
                                     <p><strong>Numer ID:</strong> ${dog.number}</p>
                                     <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
                                     <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
-                                    <button class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img src="/serce2.png" alt="Serce" class="w-8 h-auto">
-                                    </button>
-                                    </button>
                                 </div>
                             `;
                             modal.style.display = 'block';
