@@ -49,9 +49,9 @@
     <div class="container mx-auto px-4 py-8 relative">
         <div class="absolute top-4 right-4 flex space-x-4">
             <button>
-                <img src="/serce1.png" alt="Serce" class="w-8 h-auto">
+                <img src="/serce1.png" alt="Serce" class="w-8 h-auto" id="favorite-icon">
             </button>
-            <button class="text-gray-700 text-3xl">🛒</button>
+            <button class=" text-gray-700 text-3xl">🛒</button>
         </div>
         <div class="text-center mb-8">
             <img src="/logo.png" alt="CWLB Logo" class="mx-auto w-80 h-auto">
@@ -85,6 +85,17 @@
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Tak</button>
             <button id="reject-cookies"
                 class="bg-red-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-red-700">Nie</button>
+        </div>
+    </div>
+
+    <!-- Favorite Animals Modal -->
+    <div id="favorite-animals-modal" class="modal">
+        <div class="modal-content bg-white rounded-lg shadow-xl p-6">
+            <span class="close-btn">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Ulubione Zwierzęta</h2>
+            <div id="favorite-animals-list">
+                <!-- Lista ulubionych zwierząt zostanie dynamicznie wstawiona tutaj -->
+            </div>
         </div>
     </div>
 
@@ -158,13 +169,23 @@
                             document.getElementById('heartButton').addEventListener('click', function () {
                                 var heartImage = document.getElementById('heartImage');
                                 var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
+                                var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
+
                                 if (isLiked) {
                                     heartImage.src = '/serce2.png';
                                     localStorage.setItem('heart-' + dog.number, 'false');
+                                    favouriteAnimals = favouriteAnimals.filter(function (animal) {
+                                        return animal !== dog.number;
+                                    });
                                 } else {
                                     heartImage.src = '/serce1.png';
                                     localStorage.setItem('heart-' + dog.number, 'true');
+                                    if (!favouriteAnimals.includes(dog.number)) {
+                                        favouriteAnimals.push(dog.number);
+                                    }
                                 }
+
+                                localStorage.setItem('favouriteAnimals', JSON.stringify(favouriteAnimals));
                             });
                         });
 
@@ -189,6 +210,40 @@
             window.addEventListener('click', (event) => {
                 if (event.target === modal) {
                     modal.style.display = 'none';
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const favoriteIcon = document.getElementById('favorite-icon');
+            const favoriteAnimalsModal = document.getElementById('favorite-animals-modal');
+            const closeBtn = favoriteAnimalsModal.querySelector('.close-btn');
+            const favoriteAnimalsList = document.getElementById('favorite-animals-list');
+
+            favoriteIcon.addEventListener('click', function () {
+                const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
+                favoriteAnimalsList.innerHTML = '';
+
+                if (favoriteAnimals.length === 0) {
+                    favoriteAnimalsList.innerHTML = '<p>Brak ulubionych zwierząt.</p>';
+                } else {
+                    favoriteAnimals.forEach(animal => {
+                        const animalItem = document.createElement('div');
+                        animalItem.textContent = animal;
+                        favoriteAnimalsList.appendChild(animalItem);
+                    });
+                }
+
+                favoriteAnimalsModal.style.display = 'block';
+            });
+
+            closeBtn.addEventListener('click', function () {
+                favoriteAnimalsModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target === favoriteAnimalsModal) {
+                    favoriteAnimalsModal.style.display = 'none';
                 }
             });
         });
