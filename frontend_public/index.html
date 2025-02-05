@@ -45,7 +45,11 @@
 </head>
 
 <body class="bg-blue-100">
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8 relative">
+        <div class="absolute top-4 right-4 flex space-x-4">
+            <button class="text-red-500 text-3xl">❤️</button>
+            <button class="text-gray-700 text-3xl">🛒</button>
+        </div>
         <div class="text-center mb-8">
             <img src="/logo.png" alt="CWLB Logo" class="mx-auto w-80 h-auto">
         </div>
@@ -55,7 +59,7 @@
             więcej szczegółów.
         </p>
 
-        <div id="dogs-gallery" class="grid grid-cols-1 sm:grid-cols-2 md-grid-cols-3 lg:grid-cols-4 gap-6">
+        <div id="dogs-gallery" class="grid grid-cols-1 sm:grid-cols-2 md-grid-cols-3 lg-grid-cols-4 gap-6">
             <!-- Zwierzęta zostaną dynamicznie wstawione tutaj -->
         </div>
     </div>
