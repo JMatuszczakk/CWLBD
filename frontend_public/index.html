@@ -149,7 +149,7 @@
                                     <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
                                     <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
                                     <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img id="heartImage" src="/serce2.png" alt="Serce" class="w-8 h-auto">
+                                        <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : '/serce2.png'}" alt="Serce" class="w-8 h-auto">
                                     </button>
                                 </div>
                             `;
@@ -157,10 +157,13 @@
 
                             document.getElementById('heartButton').addEventListener('click', function () {
                                 var heartImage = document.getElementById('heartImage');
-                                if (heartImage.src.includes('/serce2.png')) {
-                                    heartImage.src = '/serce1.png';
-                                } else {
+                                var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
+                                if (isLiked) {
                                     heartImage.src = '/serce2.png';
+                                    localStorage.setItem('heart-' + dog.number, 'false');
+                                } else {
+                                    heartImage.src = '/serce1.png';
+                                    localStorage.setItem('heart-' + dog.number, 'true');
                                 }
                             });
                         });
