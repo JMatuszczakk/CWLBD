@@ -130,7 +130,11 @@
 
                             document.getElementById('heartButton').addEventListener('click', function() {
                                 var heartImage = document.getElementById('heartImage');
-                                heartImage.src = '/serce1.png';
+                                if (heartImage.src.includes('/serce2.png')) {
+                                    heartImage.src = '/serce1.png';
+                                } else {
+                                    heartImage.src = '/serce2.png';
+                                }
                             });
                         });
 
