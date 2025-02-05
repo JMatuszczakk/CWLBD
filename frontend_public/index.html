@@ -77,13 +77,40 @@
         </div>
     </div>
 
+    <!-- Cookie Consent Modal -->
+    <div id="cookie-consent-modal" class="modal">
+        <div class="modal-content bg-white rounded-lg shadow-xl p-6 text-center">
+            <h2 class="text-2xl font-bold mb-4">Czy akceptujesz pliki cookies?</h2>
+            <button id="accept-cookies"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Tak</button>
+            <button id="reject-cookies"
+                class="bg-red-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-red-700">Nie</button>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const galleryContainer = document.getElementById('dogs-gallery');
             const modal = document.getElementById('dog-modal');
             const modalDetails = document.getElementById('dog-details');
             const closeBtn = document.querySelector('.close-btn');
+            const cookieConsentModal = document.getElementById('cookie-consent-modal');
+            const acceptCookiesBtn = document.getElementById('accept-cookies');
+            const rejectCookiesBtn = document.getElementById('reject-cookies');
 
+            // Check for cookie consent
+            if (!localStorage.getItem('cookieConsent')) {
+                cookieConsentModal.style.display = 'block';
+            }
+
+            acceptCookiesBtn.addEventListener('click', () => {
+                localStorage.setItem('cookieConsent', 'accepted');
+                cookieConsentModal.style.display = 'none';
+            });
+
+            rejectCookiesBtn.addEventListener('click', () => {
+                window.location.href = 'https://www.google.com';
+            });
 
             fetch('https://api.cwlbelchatow.nl/api/dogs')
                 .then(response => response.json())
