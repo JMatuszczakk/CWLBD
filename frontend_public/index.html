@@ -121,13 +121,17 @@
                                     <p><strong>Numer ID:</strong> ${dog.number}</p>
                                     <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
                                     <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
-                                    <button class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img src="/serce2.png" alt="Serce" class="w-8 h-auto">
-                                    </button>
+                                    <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
+                                        <img id="heartImage" src="/serce2.png" alt="Serce" class="w-8 h-auto">
                                     </button>
                                 </div>
                             `;
                             modal.style.display = 'block';
+
+                            document.getElementById('heartButton').addEventListener('click', function() {
+                                var heartImage = document.getElementById('heartImage');
+                                heartImage.src = '/serce1.png';
+                            });
                         });
 
                         galleryContainer.appendChild(dogCard);
