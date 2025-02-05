@@ -154,7 +154,7 @@
                                 </div>
                             `;
                             modal.style.display = 'block';
-
+                            // Zapisz stan polubienia psa w localStorage
                             document.getElementById('heartButton').addEventListener('click', function () {
                                 var heartImage = document.getElementById('heartImage');
                                 var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
