@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game with Animal Apples</title>
+    <style>
+        canvas {
+            border: 2px solid black;
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const box = 50;
+        let snake = [{ x: 5 * box, y: 5 * box }];
+        let direction = "RIGHT";
+        let food = { x: 5 * box, y: 5 * box, image: null };
+        let animals = [];
+
+        async function fetchAnimals() {
+            try {
+                let response = await fetch("https://api.cwlbelchatow.nl/api/dogs");
+                let data = await response.json();
+                animals = data.map(animal => animal.photo);
+                spawnFood();
+            } catch (error) {
+                console.error("Error fetching animals:", error);
+            }
+        }
+
+        function spawnFood() {
+            food.x = Math.floor(Math.random() * (canvas.width / box)) * box;
+            food.y = Math.floor(Math.random() * (canvas.height / box)) * box;
+            if (animals.length > 0) {
+                let img = new Image();
+                img.src = animals[Math.floor(Math.random() * animals.length)];
+                food.image = img;
+            }
+        }
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+            else if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+            else if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+            else if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "green";
+            snake.forEach(part => ctx.fillRect(part.x, part.y, box, box));
+
+            if (food.image) {
+                ctx.drawImage(food.image, food.x, food.y, box, box);
+            } else {
+                ctx.fillStyle = "red";
+                ctx.fillRect(food.x, food.y, box, box);
+            }
+
+            let head = { ...snake[0] };
+            if (direction === "UP") head.y -= box;
+            else if (direction === "DOWN") head.y += box;
+            else if (direction === "LEFT") head.x -= box;
+            else if (direction === "RIGHT") head.x += box;
+
+            if (head.x === food.x && head.y === food.y) {
+                spawnFood();
+            } else {
+                snake.pop();
+            }
+
+            if (head.x < 0 || head.y < 0 || head.x >= canvas.width || head.y >= canvas.height || snake.some(p => p.x === head.x && p.y === head.y)) {
+
+                document.location.reload();
+            }
+
+            snake.unshift(head);
+        }
+
+        fetchAnimals();
+        setInterval(draw, 100);
+    </script>
+</body>
+
+</html>

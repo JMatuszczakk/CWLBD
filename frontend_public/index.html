@@ -93,18 +93,25 @@
                 const title = document.getElementById('title');
 
                 toggleImage.addEventListener('click', function () {
+                    const dogInfoElements = document.querySelectorAll('.dog-info');
                     if (toggleImage.src.includes('zmiana_b.png')) {
                         toggleImage.src = '/zmiana_c.png';
                         cartImage.src = '/wozek_c.png';
                         arrowImage.src = '/strzalka_c.png';
                         body.style.backgroundColor = '#041C32';
                         title.style.color = '#ECB365';
+                        dogInfoElements.forEach(element => {
+                            element.style.backgroundColor = '#333333'; // New background color
+                        });
                     } else {
                         toggleImage.src = '/zmiana_b.png';
                         cartImage.src = '/wozek.png';
                         arrowImage.src = '/strzalka_back.png';
                         body.style.backgroundColor = '#dbeafe';
                         title.style.color = '#1e3a8a';
+                        dogInfoElements.forEach(element => {
+                            element.style.backgroundColor = '#ffffff'; // Original background color
+                        });
                     }
                 });
             });
@@ -205,7 +212,7 @@
                                     class="w-full h-64 object-cover rounded-t-lg"
                                 />
                             </div>
-                            <div class="p-4">
+                            <div class="p-4 dog-info">
                                 <h2 class="text-xl font-bold">${dog.name}</h2>
                                 <p class="text-gray-600">${dog.race} | ${dog.color}</p>
                             </div>
