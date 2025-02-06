@@ -42,22 +42,31 @@
             font-weight: bold;
             cursor: pointer;
         }
+        .hidden {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .visible {
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
     </style>
 </head>
 
 <body class="bg-blue-100">
     <div class="container mx-auto px-4 py-8 relative">
-        <div class="absolute top-4 left-4 flex space-x-4">
+        <div class="absolute top-4 left-4 flex space-x-4" id="back-button-container">
             <button>
                 <img src="/strzalka_back.png" alt="strzalka_back" class="w-8 h-auto">
             </button>
         </div>
-        <div class="absolute top-4 right-4 flex space-x-4">
+        <div class="absolute top-4 right-4 flex space-x-4" id="icons-container">
             <button>
                 <img src="/serce1.png" alt="Serce" class="w-8 h-auto" id="favorite-icon">
             </button>
             <button>
-                <img src="/wozek.png" alt="wozek" class="w-8 h-auto" >
+                <img src="/wozek.png" alt="wozek" class="w-8 h-auto">
             </button>
         </div>
         <div class="text-center mb-2">
@@ -68,7 +77,37 @@
             Poniżej znajdziesz listę zwierząt, które czekają na nowych właścicieli. Kliknij na zdjęcie, aby zobaczyć
             więcej szczegółów.
         </p>
-
+        <!-- Reszta kodu -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let lastScrollTop = 0;
+                const backButtonContainer = document.getElementById('back-button-container');
+                const iconsContainer = document.getElementById('icons-container');
+        
+                window.addEventListener("scroll", function () {
+                    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        
+                    if (currentScroll > lastScrollTop) {
+                        // Scroll down
+                        backButtonContainer.classList.remove('visible');
+                        backButtonContainer.classList.add('hidden');
+                        iconsContainer.classList.remove('visible');
+                        iconsContainer.classList.add('hidden');
+                    } else {
+                        // Scroll up
+                        backButtonContainer.classList.remove('hidden');
+                        backButtonContainer.classList.add('visible');
+                        iconsContainer.classList.remove('hidden');
+                        iconsContainer.classList.add('visible');
+                    }
+                    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+                }, false);
+        
+                // Initial state
+                backButtonContainer.classList.add('visible');
+                iconsContainer.classList.add('visible');
+            });
+        </script>
         <div id="dogs-gallery" class="grid grid-cols-4 gap-4">
             <!-- Karty psów będą dodawane tutaj -->
         </div>
