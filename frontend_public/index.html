@@ -75,22 +75,7 @@
 
 <body class="bg-blue-100" id="body">
     <div class="container mx-auto px-4 py-8 relative">
-        <div class="absolute top-4 left-4 flex space-x-4">
-            <button>
-                <img src="/strzalka_back.png" alt="strzalka_back" class="w-8 h-auto" id="arrow-image">
-            </button>
-        </div>
-        <div class="absolute top-4 right-4 flex space-x-4">
-            <button>
-                <img src="/zmiana_b.png" alt="Serce" class="w-8 h-auto" id="toggle-image">
-            </button>
-            <button>
-                <img src="/serce1.png" alt="Serce" class="w-8 h-auto" id="favorite-icon">
-            </button>
-            <button>
-                <img src="/wozek.png" alt="wozek" class="w-8 h-auto" id="cart-image">
-            </button>
-        </div>
+
         <div class="text-center mb-2">
             <img src="/logo.png" alt="CWLB Logo" class="mx-auto w-80 h-auto">
         </div>
@@ -106,7 +91,7 @@
                 const arrowImage = document.getElementById('arrow-image');
                 const body = document.getElementById('body');
                 const title = document.getElementById('title');
-                
+
                 toggleImage.addEventListener('click', function () {
                     if (toggleImage.src.includes('zmiana_b.png')) {
                         toggleImage.src = '/zmiana_c.png';
@@ -163,15 +148,18 @@
     <div id="navbar">
         <div class="absolute top-4 left-4 flex space-x-4">
             <button>
-                <img src="/strzalka_back.png" alt="strzalka_back" class="w-8 h-auto">
+                <img src="/strzalka_back.png" alt="strzalka_back" class="w-8 h-auto" id="arrow-image">
             </button>
         </div>
         <div class="absolute top-4 right-4 flex space-x-4">
             <button>
+                <img src="/zmiana_b.png" alt="Serce" class="w-8 h-auto" id="toggle-image">
+            </button>
+            <button>
                 <img src="/serce1.png" alt="Serce" class="w-8 h-auto" id="favorite-icon">
             </button>
             <button>
-                <img src="/wozek.png" alt="wozek" class="w-8 h-auto">
+                <img src="/wozek.png" alt="wozek" class="w-8 h-auto" id="cart-image">
             </button>
         </div>
 
