@@ -94,6 +94,7 @@
 
                 toggleImage.addEventListener('click', function () {
                     const dogInfoElements = document.querySelectorAll('.dog-info');
+                    const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
                     if (toggleImage.src.includes('zmiana_b.png')) {
                         toggleImage.src = '/zmiana_c.png';
                         cartImage.src = '/wozek_c.png';
@@ -101,9 +102,12 @@
                         body.style.backgroundColor = '#041C32';
                         title.style.color = '#ECB365';
                         dogInfoElements.forEach(element => {
-                            element.style.backgroundColor = '#333333'; 
-                            element.style.color = '#ECB365';
+                            element.style.backgroundColor = '#064663'; // New background color
                             element.classList.add('object-cover', 'rounded-b');
+                        });
+                        dogInfoTextElements.forEach(element => {
+                            element.classList.remove('text-gray-600');
+                            element.classList.add('text-white');
                         });
                     } else {
                         toggleImage.src = '/zmiana_b.png';
@@ -113,7 +117,10 @@
                         title.style.color = '#1e3a8a';
                         dogInfoElements.forEach(element => {
                             element.style.backgroundColor = '#ffffff'; // Original background color
-                            element.style.color = 'black';
+                        });
+                        dogInfoTextElements.forEach(element => {
+                            element.classList.remove('text-white');
+                            element.classList.add('text-gray-600');
                         });
                     }
                 });
@@ -217,7 +224,7 @@
                             </div>
                             <div class="p-4 dog-info">
                                 <h2 class="text-xl font-bold">${dog.name}</h2>
-                                <p class="text-gray-600">${dog.race} | ${dog.color}</p>
+                                <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
                             </div>
                         `;
 
