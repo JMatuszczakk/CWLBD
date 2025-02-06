@@ -45,33 +45,57 @@
     </style>
 </head>
 
-<body class="bg-blue-100">
+<body class="bg-blue-100" id="body">
     <div class="container mx-auto px-4 py-8 relative">
         <div class="absolute top-4 left-4 flex space-x-4">
             <button>
-                <img src="/strzalka_back.png" alt="strzalka_back" class="w-8 h-auto">
+                <img src="/strzalka_back.png" alt="strzalka_back" class="w-8 h-auto" id="arrow-image">
             </button>
         </div>
         <div class="absolute top-4 right-4 flex space-x-4">
             <button>
-                <img src="/zmiana_b.png" alt="Serce" class="w-8 h-auto">
+                <img src="/zmiana_b.png" alt="Serce" class="w-8 h-auto" id="toggle-image">
             </button>
             <button>
                 <img src="/serce1.png" alt="Serce" class="w-8 h-auto" id="favorite-icon">
             </button>
             <button>
-                <img src="/wozek.png" alt="wozek" class="w-8 h-auto" >
+                <img src="/wozek.png" alt="wozek" class="w-8 h-auto" id="cart-image">
             </button>
         </div>
         <div class="text-center mb-2">
             <img src="/logo.png" alt="CWLB Logo" class="mx-auto w-80 h-auto">
         </div>
-        <h1 class="text-7xl font-bold text-center mb-8 text-blue-900">Zwierzęta</h1>
+        <h1 class="text-7xl font-bold text-center mb-8 text-blue-900" id="title">Zwierzęta</h1>
         <p class="text-center text-gray-600 mb-12">
             Poniżej znajdziesz listę zwierząt, które czekają na nowych właścicieli. Kliknij na zdjęcie, aby zobaczyć
             więcej szczegółów.
         </p>
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const toggleImage = document.getElementById('toggle-image');
+                const cartImage = document.getElementById('cart-image');
+                const arrowImage = document.getElementById('arrow-image');
+                const body = document.getElementById('body');
+                const title = document.getElementById('title');
+                
+                toggleImage.addEventListener('click', function () {
+                    if (toggleImage.src.includes('zmiana_b.png')) {
+                        toggleImage.src = '/zmiana_c.png';
+                        cartImage.src = '/wozek_c.png';
+                        arrowImage.src = '/strzalka_c.png';
+                        body.style.backgroundColor = '#041C32';
+                        title.style.color = '#ECB365';
+                    } else {
+                        toggleImage.src = '/zmiana_b.png';
+                        cartImage.src = '/wozek.png';
+                        arrowImage.src = '/strzalka_back.png';
+                        body.style.backgroundColor = '#dbeafe';
+                        title.style.color = '#1e3a8a';
+                    }
+                });
+            });
+        </script>
         <div id="dogs-gallery" class="grid grid-cols-4 gap-4">
             <!-- Karty psów będą dodawane tutaj -->
         </div>
