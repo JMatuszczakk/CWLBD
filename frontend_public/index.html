@@ -101,8 +101,8 @@
                         body.style.backgroundColor = '#041C32';
                         title.style.color = '#ECB365';
                         dogInfoElements.forEach(element => {
-                            element.style.backgroundColor = '#333333'; // New background color
-                            // round only the bottom corners
+                            element.style.backgroundColor = '#333333'; 
+                            element.style.color = '#ECB365';
                             element.classList.add('object-cover', 'rounded-b');
                         });
                     } else {
@@ -113,6 +113,7 @@
                         title.style.color = '#1e3a8a';
                         dogInfoElements.forEach(element => {
                             element.style.backgroundColor = '#ffffff'; // Original background color
+                            element.style.color = 'black';
                         });
                     }
                 });
@@ -211,7 +212,7 @@
                                 <img 
                                     src="${dog.photo}" 
                                     alt="${dog.name}" 
-                                    class="w-full h-64 object-cover rounded-t-lg"
+                                    class="w-full h-64 object-cover rounded-t"
                                 />
                             </div>
                             <div class="p-4 dog-info">
