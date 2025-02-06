@@ -102,6 +102,8 @@
                         title.style.color = '#ECB365';
                         dogInfoElements.forEach(element => {
                             element.style.backgroundColor = '#333333'; // New background color
+                            // also add class="w-full h-64 object-cover rounded-t-lg"
+                            element.classList.add('object-cover', 'rounded');
                         });
                     } else {
                         toggleImage.src = '/zmiana_b.png';
