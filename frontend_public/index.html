@@ -234,8 +234,7 @@
 
 
 
-    <div id="top-bar"
-        class="fixed top-0 left-0 w-full text-white p-4 z-50 flex items-center justify-between"
+    <div id="top-bar" class="fixed top-0 left-0 w-full text-white p-4 z-50 flex items-center justify-between"
         style="transition: top 0.3s;">
         <!-- Left side: back arrow + title -->
 
@@ -280,16 +279,15 @@
                 const ulubione_tekst = document.getElementById('ulu-zwie-tekst');
                 const ulubione_tekst_maly = document.getElementById('favorite-animals-list');
 
-                // Check for dark mode cookie
-                if (getCookie('darkMode') === 'true') {
+                function applyDarkMode() {
+                    const dogInfoElements = document.querySelectorAll('.dog-info');
+                    const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
                     toggleImage.src = '/zmiana_c.png';
                     cartImage.src = '/wozek_c.png';
                     arrowImage.src = '/strzalka_c.png';
                     body.style.backgroundColor = '#041C32';
                     title.style.color = '#ECB365';
 
-                    const dogInfoElements = document.querySelectorAll('.dog-info');
-                    const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
                     dogInfoElements.forEach(element => {
                         element.style.backgroundColor = '#064663';
                         element.style.color = '#ECB365';
@@ -301,60 +299,184 @@
                     szczegoly.style.backgroundColor = '#064663';
                     szczegoly_tekst.style.color = '#ECB365';
                     ulubione_bg.style.backgroundColor = '#064663';
-                    ulubione_tekst.style.Color = '#ECB365';
-                    ulubione_tekst_maly.style.Color = '#ECB365';
+                    ulubione_tekst.style.color = '#ECB365';
+                    ulubione_tekst_maly.style.color = '#ECB365';
+                }
+
+                function applyLightMode() {
+                    const dogInfoElements = document.querySelectorAll('.dog-info');
+                    const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
+                    toggleImage.src = '/zmiana_b.png';
+                    cartImage.src = '/wozek.png';
+                    arrowImage.src = '/strzalka_back.png';
+                    body.style.backgroundColor = '#dbeafe';
+                    title.style.color = '#1e3a8a';
+                    dogInfoElements.forEach(element => {
+                        element.style.backgroundColor = '#ffffff';
+                        element.style.color = 'black';
+                    });
+                    dogInfoTextElements.forEach(element => {
+                        element.style.color = 'black';
+                        element.classList.remove('text-white');
+                        element.classList.add('text-gray-600');
+                    });
+                    szczegoly.style.backgroundColor = 'white';
+                    szczegoly_tekst.style.color = 'black';
+                    ulubione_bg.style.backgroundColor = 'white';
+                    ulubione_tekst.style.color = 'black';
+                    ulubione_tekst_maly.style.color = 'black';
                 }
 
                 toggleImage.addEventListener('click', function () {
-                    const dogInfoElements = document.querySelectorAll('.dog-info');
-                    const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
                     if (toggleImage.src.includes('zmiana_b.png')) {
-                        toggleImage.src = '/zmiana_c.png';
-                        cartImage.src = '/wozek_c.png';
-                        arrowImage.src = '/strzalka_c.png';
-                        body.style.backgroundColor = '#041C32';
-                        title.style.color = '#ECB365';
-
-                        dogInfoElements.forEach(element => {
-                            element.style.backgroundColor = '#064663';
-                            element.style.color = '#ECB365';
-                            element.classList.add('object-cover', 'rounded-b');
-                        });
-                        dogInfoTextElements.forEach(element => {
-                            element.style.color = '#a7732a';
-                        });
-                        szczegoly.style.backgroundColor = '#064663';
-                        szczegoly_tekst.style.color = '#ECB365';
-                        ulubione_bg.style.backgroundColor = '#064663';
-                        ulubione_tekst.style.color = '#ECB365';
-                        ulubione_tekst_maly.style.color = '#ECB365';
-
+                        applyDarkMode();
                         setCookie('darkMode', 'true', 7);
                     } else {
-                        toggleImage.src = '/zmiana_b.png';
-                        cartImage.src = '/wozek.png';
-                        arrowImage.src = '/strzalka_back.png';
-                        body.style.backgroundColor = '#dbeafe';
-                        title.style.color = '#1e3a8a';
-                        dogInfoElements.forEach(element => {
-                            element.style.backgroundColor = '#ffffff';
-                            element.style.color = 'black';
-                        });
-                        dogInfoTextElements.forEach(element => {
-                            element.style.color = 'black';
-                            element.classList.remove('text-white');
-                            element.classList.add('text-gray-600');
-                        });
-                        szczegoly.style.backgroundColor = 'white';
-                        szczegoly_tekst.style.color = 'black';
-                        ulubione_bg.style.backgroundColor = 'white';
-                        ulubione_tekst.style.color = 'black';
-                        ulubione_tekst_maly.style.color = 'black';
-
+                        applyLightMode();
                         setCookie('darkMode', 'false', 7);
                     }
                 });
+
+                const galleryContainer = document.getElementById('dogs-gallery');
+                const modal = document.getElementById('dog-modal');
+                const modalDetails = document.getElementById('dog-details');
+                const closeBtn = document.querySelector('.close-btn');
+                const cookieConsentModal = document.getElementById('cookie-consent-modal');
+                const acceptCookiesBtn = document.getElementById('accept-cookies');
+                const rejectCookiesBtn = document.getElementById('reject-cookies');
+
+                // Check for cookie consent
+                if (!localStorage.getItem('cookieConsent')) {
+                    cookieConsentModal.style.display = 'block';
+                }
+
+                acceptCookiesBtn.addEventListener('click', () => {
+                    localStorage.setItem('cookieConsent', 'accepted');
+                    cookieConsentModal.style.display = 'none';
+                });
+
+                rejectCookiesBtn.addEventListener('click', () => {
+                    window.location.href = 'https://www.google.com';
+                });
+
+                fetch('https://api.cwlbelchatow.nl/api/dogs')
+                    .then(response => response.json())
+                    .then(dogs => {
+                        // Stwórz karty psów
+                        dogs.forEach(dog => {
+                            const dogCard = document.createElement('div');
+                            dogCard.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
+                            dogCard.innerHTML = `
+                                <div class="p-0">
+                                    <img 
+                                        src="${dog.photo}" 
+                                        alt="${dog.name}" 
+                                        class="w-full h-64 object-cover rounded-t"
+                                    />
+                                </div>
+                                <div class="p-4 dog-info">
+                                    <h2 class="text-xl font-bold">${dog.name}</h2>
+                                    <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
+                                </div>
+                            `;
+
+                            // Dodaj event kliknięcia, aby pokazać szczegóły psa
+                            dogCard.addEventListener('click', () => {
+                                modalDetails.innerHTML = `
+                                    <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
+                                    <img 
+                                        src="${dog.photo}" 
+                                        alt="${dog.name}" 
+                                        class="w-full h-96 object-cover rounded-lg mb-4"
+                                    />
+                                    <div class="space-y-2 relative">
+                                        <p><strong>Rasa:</strong> ${dog.race}</p>
+                                        <p><strong>Kolor:</strong> ${dog.color}</p>
+                                        <p><strong>Numer ID:</strong> ${dog.number}</p>
+                                        <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
+                                        <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
+                                        <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
+                                            <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : '/serce2.png'}" alt="Serce" class="w-8 h-auto">
+                                        </button>
+                                    </div>
+                                `;
+                                modal.style.display = 'block';
+                                // Zapisz stan polubienia psa w localStorage
+                                document.getElementById('heartButton').addEventListener('click', function () {
+                                    var heartImage = document.getElementById('heartImage');
+                                    var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
+                                    var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
+                                    addFavoriteAnimal(dog.number);
+                                    if (isLiked) {
+                                        heartImage.src = '/serce2.png';
+                                        localStorage.setItem('heart-' + dog.number, 'false');
+                                        favouriteAnimals = favouriteAnimals.filter(function (animal) {
+                                            return animal !== dog.number;
+                                        });
+                                    } else {
+                                        heartImage.src = '/serce1.png';
+                                        localStorage.setItem('heart-' + dog.number, 'true');
+                                        if (!favouriteAnimals.includes(dog.number)) {
+                                            favouriteAnimals.push(dog.number);
+                                        }
+                                    }
+
+                                    localStorage.setItem('favouriteAnimals', JSON.stringify(favouriteAnimals));
+                                });
+                            });
+
+                            galleryContainer.appendChild(dogCard);
+                        });
+
+                        // Apply dark mode if the cookie is set
+                        if (getCookie('darkMode') === 'true') {
+                            applyDarkMode();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Błąd podczas wczytywania psów:', error);
+                        galleryContainer.innerHTML = `
+                            <div class="col-span-full text-center text-red-600">
+                                Nie udało się wczytać psów. Prosimy spróbować ponownie później.
+                            </div>
+                        `;
+                    });
+
+                // Zamknij modal po kliknięciu przycisku zamknięcia
+                closeBtn.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+
+                // Zamknij modal po kliknięciu poza nim
+                window.addEventListener('click', (event) => {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
             });
+
+            function setCookie(name, value, days) {
+                const d = new Date();
+                d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + d.toUTCString();
+                document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            }
+
+            function getCookie(name) {
+                const cname = name + "=";
+                const decodedCookie = decodeURIComponent(document.cookie);
+                const ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(cname) == 0) {
+                        return c.substring(cname.length, c.length);
+                    }
+                }
+                return "";
+            }
         </script>
         <script>
             function setCookie(name, value, days) {
@@ -416,7 +538,7 @@
             </div>
         </div>
     </div>
-    
+
 
 
     <script>
