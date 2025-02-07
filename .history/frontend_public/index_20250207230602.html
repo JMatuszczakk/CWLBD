@@ -236,32 +236,6 @@
         ☰
     </button>
 
-    <div
-  id="top-bar"
-  class="fixed top-0 left-0 w-full bg-blue-600 text-white p-4 z-50 flex items-center justify-between"
-  style="transition: top 0.3s;"
->
-  <!-- Left side: back arrow + title -->
-  <div class="flex items-center space-x-4">
-    <button>
-      <img src="/strzalka_back.png" alt="strzalka_back" class="w-8 h-auto" id="arrow-image">
-    </button>
-    <h2 class="text-lg font-semibold">Dynamic Top Bar</h2>
-  </div>
-  <!-- Right side: user's existing icons/buttons -->
-  <div class="flex items-center space-x-4">
-    <button>
-      <img src="/zmiana_b.png" alt="Serce" class="w-8 h-auto" id="toggle-image">
-    </button>
-    <button>
-      <img src="/serce1.png" alt="Serce" class="w-8 h-auto" id="favorite-icon">
-    </button>
-    <button>
-      <img src="/wozek.png" alt="wozek" class="w-8 h-auto" id="cart-image">
-    </button>
-  </div>
-</div>
-
     <div class="container mx-auto px-4 py-8 relative">
         <div class="text-center mb-2">
             <img src="/logo.png" alt="CWLB Logo" class="mx-auto w-80 h-auto">
@@ -592,19 +566,6 @@
         window.onscroll = function () { scrollFunction() };
         document.getElementById("navbar").style.top = "0"
 
-    </script>
-    <script>
-        let prevScrollpos = window.pageYOffset;
-        window.onscroll = () => {
-            const currentScrollPos = window.pageYOffset;
-            const bar = document.getElementById("top-bar");
-            if (prevScrollpos > currentScrollPos) {
-                bar.style.top = "0";
-            } else {
-                bar.style.top = "-60px";
-            }
-            prevScrollpos = currentScrollPos;
-        };
     </script>
 </body>
 
