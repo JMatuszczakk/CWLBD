@@ -103,14 +103,19 @@
                         arrowImage.src = '/strzalka_c.png';
                         body.style.backgroundColor = '#041C32';
                         title.style.color = '#ECB365';
+
                         dogInfoElements.forEach(element => {
-                            element.style.backgroundColor = '#064663'; 
+                            element.style.backgroundColor = '#064663';
                             element.style.color = '#ECB365';
                             element.classList.add('object-cover', 'rounded-b');
                         });
+                        dogInfoTextElements.forEach(element => {
+                            //a collor darker than #ECB365
+                            element.style.color = '';
+                        });
                         szczegoly.style.backgroundColor = '#064663';
                         szczegoly_tekst.style.color = '#ECB365';
-                        
+
                     } else {
                         toggleImage.src = '/zmiana_b.png';
                         cartImage.src = '/wozek.png';
@@ -121,6 +126,7 @@
                             element.style.backgroundColor = '#ffffff'; // Original background color
                         });
                         dogInfoTextElements.forEach(element => {
+                            element.style.color = '#1e3a8a'; // Original text color
                             element.classList.remove('text-white');
                             element.classList.add('text-gray-600');
                         });
