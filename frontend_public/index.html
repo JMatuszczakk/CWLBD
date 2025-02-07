@@ -270,9 +270,12 @@
             więcej szczegółów.
         </p>
         <div class="container mx-auto px-4 py-6 relative">
-            <button>
-                <img src="/filter_b.png" alt="filter" class="w-8 h-auto" id="filter-image">
-            </button>
+            <div class="flex items-center space-x-4">
+                <button>
+                    <img src="/filter_b.png" alt="filter" class="w-8 h-auto" id="filter-image">
+                </button>
+                <input type="text" id="filter-input" class="border rounded-lg p-2" placeholder="Wpisz tekst...">
+            </div>
         </div>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -290,6 +293,7 @@
                 const rightSideNavbar = document.getElementById('right-side-navbar');
                 const settings = document.getElementById('settings-image');
                 const filter = document.getElementById('filter-image');
+                const filter_input = document.getElementById('filter-input');
 
                 function applyDarkMode() {
                     const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -318,6 +322,7 @@
                     ulubione_bg.style.backgroundColor = '#064663';
                     ulubione_tekst.style.color = '#ECB365';
                     ulubione_tekst_maly.style.color = '#ECB365';
+                    filter_input.style.backgroundColor = '#333';
                 }
 
                 function applyLightMode() {
@@ -346,6 +351,7 @@
                     ulubione_bg.style.backgroundColor = 'white';
                     ulubione_tekst.style.color = 'black';
                     ulubione_tekst_maly.style.color = 'black';
+                    filter_input.style.backgroundColor = 'white';
                 }
 
                 toggleImage.addEventListener('click', function () {
