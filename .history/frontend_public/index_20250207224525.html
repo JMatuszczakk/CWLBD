@@ -65,122 +65,68 @@
             color: black;
         }
 
-        #sidebar {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background-color: #333;
-            transition: left 0.3s ease;
-            z-index: 1000;
-        }
-
-        #sidebar:hover {
-            left: 0;
-        }
-
-        #sidebar a {
-            display: block;
-            color: white;
-            padding: 15px;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        #sidebar a:hover {
-            background-color: #575757;
-        }
-
-        #sidebar-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            z-index: 1001;
-            transition: background-color 0.3s ease;
-        }
-
-        #sidebar-toggle:hover {
-            background-color: #575757;
-        }
-
         /* Dynamiczne skalowanie dla mniejszych ekranów */
         @media (max-width: 768px) {
             h1 {
-                font-size: 4rem;
+                font-size: 4rem; /* Zmniejsz rozmiar czcionki na mniejszych ekranach */
             }
 
             .container {
-                padding: 1rem;
+                padding: 1rem; /* Zmniejsz padding na mniejszych ekranach */
             }
 
             #dogs-gallery {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr); /* Zmień układ siatki na 2 kolumny */
             }
 
             .dog-info {
-                padding: 1rem;
+                padding: 1rem; /* Zmniejsz padding na mniejszych ekranach */
             }
 
             .dog-info h2 {
-                font-size: 1.25rem;
+                font-size: 1.25rem; /* Zmniejsz rozmiar czcionki na mniejszych ekranach */
             }
 
             .dog-info p {
-                font-size: 0.875rem;
+                font-size: 0.875rem; /* Zmniejsz rozmiar czcionki na mniejszych ekranach */
             }
 
             .modal-content {
-                margin: 5% auto;
+                margin: 5% auto; /* Zmniejsz margines na mniejszych ekranach */
             }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 3rem;
+                font-size: 3rem; /* Jeszcze mniejszy rozmiar czcionki na bardzo małych ekranach */
             }
 
             #dogs-gallery {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Zmień układ siatki na 1 kolumnę */
             }
 
             .dog-info {
-                padding: 0.5rem;
+                padding: 0.5rem; /* Jeszcze mniejszy padding na bardzo małych ekranach */
             }
 
             .dog-info h2 {
-                font-size: 1rem;
+                font-size: 1rem; /* Jeszcze mniejszy rozmiar czcionki na bardzo małych ekranach */
             }
 
             .dog-info p {
-                font-size: 0.75rem;
+                font-size: 0.75rem; /* Jeszcze mniejszy rozmiar czcionki na bardzo małych ekranach */
             }
 
             .modal-content {
-                margin: 2% auto;
+                margin: 2% auto; /* Jeszcze mniejszy margines na bardzo małych ekranach */
             }
         }
     </style>
 </head>
 
 <body class="bg-blue-100" id="body">
-    <div id="sidebar">
-        <a href="#">Strona Główna</a>
-        <a href="#">O Nas</a>
-        <a href="#">Usługi</a>
-        <a href="#">Kontakt</a>
-    </div>
-
-    <button id="sidebar-toggle" class="fixed top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-1000">
-        ☰
-    </button>
-
     <div class="container mx-auto px-4 py-8 relative">
+
         <div class="text-center mb-2">
             <img src="/logo.png" alt="CWLB Logo" class="mx-auto w-80 h-auto">
         </div>

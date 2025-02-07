@@ -65,120 +65,90 @@
             color: black;
         }
 
-        #sidebar {
+        #top-bar {
             position: fixed;
             top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background-color: #333;
-            transition: left 0.3s ease;
+            width: 100%;
+            transition: top 0.3s;
             z-index: 1000;
         }
 
-        #sidebar:hover {
-            left: 0;
-        }
-
-        #sidebar a {
-            display: block;
-            color: white;
-            padding: 15px;
-            text-decoration: none;
-            text-align: center;
-        }
-
-        #sidebar a:hover {
-            background-color: #575757;
-        }
-
-        #sidebar-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background-color: #333;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            z-index: 1001;
-            transition: background-color 0.3s ease;
-        }
-
-        #sidebar-toggle:hover {
-            background-color: #575757;
+        .hide-top-bar {
+            top: -60px; /* Dostosuj wartość do wysokości paska */
         }
 
         /* Dynamiczne skalowanie dla mniejszych ekranów */
         @media (max-width: 768px) {
             h1 {
-                font-size: 4rem;
+                font-size: 4rem; /* Zmniejsz rozmiar czcionki na mniejszych ekranach */
             }
 
             .container {
-                padding: 1rem;
+                padding: 1rem; /* Zmniejsz padding na mniejszych ekranach */
             }
 
             #dogs-gallery {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr); /* Zmień układ siatki na 2 kolumny */
             }
 
             .dog-info {
-                padding: 1rem;
+                padding: 1rem; /* Zmniejsz padding na mniejszych ekranach */
             }
 
             .dog-info h2 {
-                font-size: 1.25rem;
+                font-size: 1.25rem; /* Zmniejsz rozmiar czcionki na mniejszych ekranach */
             }
 
             .dog-info p {
-                font-size: 0.875rem;
+                font-size: 0.875rem; /* Zmniejsz rozmiar czcionki na mniejszych ekranach */
             }
 
             .modal-content {
-                margin: 5% auto;
+                margin: 5% auto; /* Zmniejsz margines na mniejszych ekranach */
             }
         }
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 3rem;
+                font-size: 3rem; /* Jeszcze mniejszy rozmiar czcionki na bardzo małych ekranach */
             }
 
             #dogs-gallery {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr; /* Zmień układ siatki na 1 kolumnę */
             }
 
             .dog-info {
-                padding: 0.5rem;
+                padding: 0.5rem; /* Jeszcze mniejszy padding na bardzo małych ekranach */
             }
 
             .dog-info h2 {
-                font-size: 1rem;
+                font-size: 1rem; /* Jeszcze mniejszy rozmiar czcionki na bardzo małych ekranach */
             }
 
             .dog-info p {
-                font-size: 0.75rem;
+                font-size: 0.75rem; /* Jeszcze mniejszy rozmiar czcionki na bardzo małych ekranach */
             }
 
             .modal-content {
-                margin: 2% auto;
+                margin: 2% auto; /* Jeszcze mniejszy margines na bardzo małych ekranach */
             }
         }
     </style>
 </head>
 
 <body class="bg-blue-100" id="body">
-    <div id="sidebar">
-        <a href="#">Strona Główna</a>
-        <a href="#">O Nas</a>
-        <a href="#">Usługi</a>
-        <a href="#">Kontakt</a>
+    <div id="top-bar">
+        <div class="flex justify-between items-center p-4 bg-blue-900 text-white">
+            <div class="flex space-x-4">
+                <button>
+                    <img src="/serce1.png" alt="Serce" class="w-8 h-auto" id="favorite-icon">
+                </button>
+                <button>
+                    <img src="/wozek.png" alt="Koszyk" class="w-8 h-auto" id="cart-icon">
+                </button>
+            </div>
+        </div>
     </div>
-
-    <button id="sidebar-toggle" class="fixed top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded-lg z-1000">
-        ☰
-    </button>
 
     <div class="container mx-auto px-4 py-8 relative">
         <div class="text-center mb-2">
@@ -189,67 +159,6 @@
             Poniżej znajdziesz listę zwierząt, które czekają na nowych właścicieli. Kliknij na zdjęcie, aby zobaczyć
             więcej szczegółów.
         </p>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const toggleImage = document.getElementById('toggle-image');
-                const cartImage = document.getElementById('cart-image');
-                const arrowImage = document.getElementById('arrow-image');
-                const body = document.getElementById('body');
-                const title = document.getElementById('title');
-                const szczegoly = document.getElementById('dog-modal-details');
-                const szczegoly_tekst = document.getElementById('dog-details');
-                const ulubione_bg = document.getElementById('ulu-zwie');
-                const ulubione_tekst = document.getElementById('ulu-zwie-tekst');
-                const ulubione_tekst_maly = document.getElementById('favorite-animals-list');
-
-                toggleImage.addEventListener('click', function () {
-                    const dogInfoElements = document.querySelectorAll('.dog-info');
-                    const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
-                    if (toggleImage.src.includes('zmiana_b.png')) {
-                        toggleImage.src = '/zmiana_c.png';
-                        cartImage.src = '/wozek_c.png';
-                        arrowImage.src = '/strzalka_c.png';
-                        body.style.backgroundColor = '#041C32';
-                        title.style.color = '#ECB365';
-
-                        dogInfoElements.forEach(element => {
-                            element.style.backgroundColor = '#064663';
-                            element.style.color = '#ECB365';
-                            element.classList.add('object-cover', 'rounded-b');
-                        });
-                        dogInfoTextElements.forEach(element => {
-                            element.style.color = '#a7732a';
-                        });
-                        szczegoly.style.backgroundColor = '#064663';
-                        szczegoly_tekst.style.color = '#ECB365';
-                        ulubione_bg.style.backgroundColor = '#064663';
-                        ulubione_tekst.style.Color = '#ECB365';
-                        ulubione_tekst_maly.style.Color = '#ECB365';
-
-                    } else {
-                        toggleImage.src = '/zmiana_b.png';
-                        cartImage.src = '/wozek.png';
-                        arrowImage.src = '/strzalka_back.png';
-                        body.style.backgroundColor = '#dbeafe';
-                        title.style.color = '#1e3a8a';
-                        dogInfoElements.forEach(element => {
-                            element.style.backgroundColor = '#ffffff';
-                            element.style.color = 'black';
-                        });
-                        dogInfoTextElements.forEach(element => {
-                            element.style.color = 'black';
-                            element.classList.remove('text-white');
-                            element.classList.add('text-gray-600');
-                        });
-                        szczegoly.style.backgroundColor = 'white';
-                        szczegoly_tekst.style.color = 'black';
-                        ulubione_bg.style.backgroundColor = 'white';
-                        ulubione_tekst.style.Color = 'black';
-                        ulubione_tekst_maly.style.Color = 'black';
-                    }
-                });
-            });
-        </script>
         <div id="dogs-gallery" class="grid grid-cols-4 gap-4">
             <!-- Karty psów będą dodawane tutaj -->
         </div>
@@ -286,28 +195,68 @@
             </div>
         </div>
     </div>
-    <div id="navbar">
-        <div class="absolute top-4 left-4 flex space-x-4">
-            <button>
-                <img src="/strzalka_back.png" alt="strzalka_back" class="w-8 h-auto" id="arrow-image">
-            </button>
-        </div>
-        <div class="absolute top-4 right-4 flex space-x-4">
-            <button>
-                <img src="/zmiana_b.png" alt="Serce" class="w-8 h-auto" id="toggle-image">
-            </button>
-            <button>
-                <img src="/serce1.png" alt="Serce" class="w-8 h-auto" id="favorite-icon">
-            </button>
-            <button>
-                <img src="/wozek.png" alt="wozek" class="w-8 h-auto" id="cart-image">
-            </button>
-        </div>
-
-    </div>
-
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleImage = document.getElementById('toggle-image');
+            const cartImage = document.getElementById('cart-image');
+            const arrowImage = document.getElementById('arrow-image');
+            const body = document.getElementById('body');
+            const title = document.getElementById('title');
+            const szczegoly = document.getElementById('dog-modal-details');
+            const szczegoly_tekst = document.getElementById('dog-details');
+            const ulubione_bg = document.getElementById('ulu-zwie');
+            const ulubione_tekst = document.getElementById('ulu-zwie-tekst');
+            const ulubione_tekst_maly = document.getElementById('favorite-animals-list');
+
+            toggleImage.addEventListener('click', function () {
+                const dogInfoElements = document.querySelectorAll('.dog-info');
+                const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
+                if (toggleImage.src.includes('zmiana_b.png')) {
+                    toggleImage.src = '/zmiana_c.png';
+                    cartImage.src = '/wozek_c.png';
+                    arrowImage.src = '/strzalka_c.png';
+                    body.style.backgroundColor = '#041C32';
+                    title.style.color = '#ECB365';
+
+                    dogInfoElements.forEach(element => {
+                        element.style.backgroundColor = '#064663';
+                        element.style.color = '#ECB365';
+                        element.classList.add('object-cover', 'rounded-b');
+                    });
+                    dogInfoTextElements.forEach(element => {
+                        element.style.color = '#a7732a';
+                    });
+                    szczegoly.style.backgroundColor = '#064663';
+                    szczegoly_tekst.style.color = '#ECB365';
+                    ulubione_bg.style.backgroundColor = '#064663';
+                    ulubione_tekst.style.Color = '#ECB365';
+                    ulubione_tekst_maly.style.Color = '#ECB365';
+
+                } else {
+                    toggleImage.src = '/zmiana_b.png';
+                    cartImage.src = '/wozek.png';
+                    arrowImage.src = '/strzalka_back.png';
+                    body.style.backgroundColor = '#dbeafe';
+                    title.style.color = '#1e3a8a';
+                    dogInfoElements.forEach(element => {
+                        element.style.backgroundColor = '#ffffff';
+                        element.style.color = 'black';
+                    });
+                    dogInfoTextElements.forEach(element => {
+                        element.style.color = 'black';
+                        element.classList.remove('text-white');
+                        element.classList.add('text-gray-600');
+                    });
+                    szczegoly.style.backgroundColor = 'white';
+                    szczegoly_tekst.style.color = 'black';
+                    ulubione_bg.style.backgroundColor = 'white';
+                    ulubione_tekst.style.Color = 'black';
+                    ulubione_tekst_maly.style.Color = 'black';
+                }
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', function () {
             const galleryContainer = document.getElementById('dogs-gallery');
             const modal = document.getElementById('dog-modal');
@@ -455,9 +404,17 @@
                 }
             });
         });
-        window.onscroll = function () { scrollFunction() };
-        document.getElementById("navbar").style.top = "0"
 
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            const topBar = document.getElementById("top-bar");
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                topBar.classList.add("hide-top-bar");
+            } else {
+                topBar.classList.remove("hide-top-bar");
+            }
+        }
     </script>
 </body>
 
