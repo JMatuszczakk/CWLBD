@@ -244,7 +244,7 @@
             </button>
         </div>
         <!-- Right side: user's existing icons/buttons -->
-        <div class="flex items-center space-x-4 ml-auto bg-white rounded-lg p-2" id="'right-side-navbar">
+        <div class="flex items-center space-x-4 ml-auto bg-white rounded-lg p-2" id="right-side-navbar">
             <button>
                 <img src="/zmiana_b.png" alt="Serce" class="w-8 h-auto" id="toggle-image">
             </button>
@@ -278,6 +278,8 @@
                 const ulubione_bg = document.getElementById('ulu-zwie');
                 const ulubione_tekst = document.getElementById('ulu-zwie-tekst');
                 const ulubione_tekst_maly = document.getElementById('favorite-animals-list');
+                const leftSideNavbar = document.getElementById('left-side-navbar');
+                const rightSideNavbar = document.getElementById('right-side-navbar');
 
                 function applyDarkMode() {
                     const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -287,6 +289,9 @@
                     arrowImage.src = '/strzalka_c.png';
                     body.style.backgroundColor = '#041C32';
                     title.style.color = '#ECB365';
+                    leftSideNavbar.style.backgroundColor = '#333';
+                    rightSideNavbar.style.backgroundColor = '#333';
+
 
                     dogInfoElements.forEach(element => {
                         element.style.backgroundColor = '#064663';
@@ -712,7 +717,7 @@
             });
         });
         window.onscroll = function () { scrollFunction() };
-        document.getElementById("navbar").style.top = "0"
+        // document.getElementById("navbar").style.top = "0"
 
     </script>
     <script>
