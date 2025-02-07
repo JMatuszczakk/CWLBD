@@ -246,13 +246,16 @@
         <!-- Right side: user's existing icons/buttons -->
         <div class="flex items-center space-x-4 ml-auto bg-white rounded-lg p-2" id="right-side-navbar">
             <button>
-                <img src="/zmiana_b.png" alt="Serce" class="w-8 h-auto" id="toggle-image">
+                <img src="/zmiana_b.png" alt="switch" class="w-8 h-auto" id="toggle-image">
             </button>
             <button>
                 <img src="/serce1.png" alt="Serce" class="w-8 h-auto" id="favorite-icon">
             </button>
             <button>
                 <img src="/wozek.png" alt="wozek" class="w-8 h-auto" id="cart-image">
+            </button>
+            <button>
+                <img src="/settings_b.png" alt="settings" class="w-8 h-auto" id="settings-image">
             </button>
         </div>
     </div>
@@ -262,10 +265,15 @@
             <img src="/logo.png" alt="CWLB Logo" class="mx-auto w-80 h-auto">
         </div>
         <h1 class="text-7xl font-bold text-center mb-8 text-blue-900" id="title">Zwierzęta</h1>
-        <p class="text-center text-gray-600 mb-12">
+        <p class="text-center text-gray-600 ">
             Poniżej znajdziesz listę zwierząt, które czekają na nowych właścicieli. Kliknij na zdjęcie, aby zobaczyć
             więcej szczegółów.
         </p>
+        <div class="container mx-auto px-4 py-6 relative">
+            <button>
+                <img src="/filter_b.png" alt="filter" class="w-8 h-auto" id="filter-image">
+            </button>
+        </div>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const toggleImage = document.getElementById('toggle-image');
@@ -280,6 +288,8 @@
                 const ulubione_tekst_maly = document.getElementById('favorite-animals-list');
                 const leftSideNavbar = document.getElementById('left-side-navbar');
                 const rightSideNavbar = document.getElementById('right-side-navbar');
+                const settings = document.getElementById('settings-image');
+                const filter = document.getElementById('filter-image');
 
                 function applyDarkMode() {
                     const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -287,6 +297,8 @@
                     toggleImage.src = '/zmiana_c.png';
                     cartImage.src = '/wozek_c.png';
                     arrowImage.src = '/strzalka_c.png';
+                    settings.src = '/settings_c.png';
+                    filter.src = '/filter_c.png';
                     body.style.backgroundColor = '#041C32';
                     title.style.color = '#ECB365';
                     leftSideNavbar.style.backgroundColor = '#333';
@@ -314,6 +326,8 @@
                     toggleImage.src = '/zmiana_b.png';
                     cartImage.src = '/wozek.png';
                     arrowImage.src = '/strzalka_back.png';
+                    settings.src = '/settings_b.png';
+                    filter.src = '/filter_b.png';
                     body.style.backgroundColor = '#dbeafe';
                     title.style.color = '#1e3a8a';
                     dogInfoElements.forEach(element => {
