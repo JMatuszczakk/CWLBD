@@ -11,18 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      uses: Its4Nik/NGX-action@3.1
-      with:
-        # Token such as GITHUB_TOKEN that has `write:packages` scope to authenticate against GCHR.
-        github-push-secret: ${{ secrets.MY_SECRET }}
-        # Docker Image name
-        docker-image-name: ghcr.io/jmatuszczakk/cwlbd-frontend_public
-        # Docker Image tag
-  
-        # Dockerfile path and name
-        dockerfile-path: frontend_public/Dockerfile
-        # Path to the build context
-        build-context: frontend_public
-        # If 'true', skip pushing the image
+      - uses: actions/checkout@v4
+      - name: Build the Docker image
+        uses: Its4Nik/NGX-action@3.1
+        with:
+          # Token such as GITHUB_TOKEN that has `write:packages` scope to authenticate against GCHR.
+          github-push-secret: ${{ secrets.MY_SECRET }}
+          # Docker Image name
+          docker-image-name: ghcr.io/jmatuszczakk/cwlbd-frontend_public
+          # Docker Image tag
+          # Dockerfile path and name
+          dockerfile-path: frontend_public/Dockerfile
+          # Path to the build context
+          build-context: frontend_public
+          # If 'true', skip pushing the image
