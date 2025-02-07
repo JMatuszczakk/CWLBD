@@ -93,6 +93,9 @@
                 const title = document.getElementById('title');
                 const szczegoly = document.getElementById('dog-modal-details');
                 const szczegoly_tekst = document.getElementById('dog-details');
+                const ulubione_bg = document.getElementById('ulu-zwie');
+                const ulubione_tekst = document.getElementById('ulu-zwie-tekst');
+                const ulubione_tekst_maly = document.getElementById('favorite-animals-list');
 
                 toggleImage.addEventListener('click', function () {
                     const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -115,6 +118,9 @@
                         });
                         szczegoly.style.backgroundColor = '#064663';
                         szczegoly_tekst.style.color = '#ECB365';
+                        ulubione_bg.style.backgroundColor = '#064663';
+                        ulubione_tekst.style.Color = '#ECB365';
+                        ulubione_tekst_maly.style.Color = '#ECB365';
 
                     } else {
                         toggleImage.src = '/zmiana_b.png';
@@ -133,6 +139,9 @@
                         });
                         szczegoly.style.backgroundColor = 'white';
                         szczegoly_tekst.style.color = 'black';
+                        ulubione_bg.style.backgroundColor = 'white';
+                        ulubione_tekst.style.Color = 'black';
+                        ulubione_tekst_maly.style.Color = 'black';
                     }
                 });
             });
@@ -165,9 +174,9 @@
 
     <!-- Favorite Animals Modal -->
     <div id="favorite-animals-modal" class="modal">
-        <div class="modal-content bg-white rounded-lg shadow-xl p-6">
-            <span class="close-btn">&times;</span>
-            <h2 class="text-2xl font-bold mb-4">Ulubione Zwierzęta</h2>
+        <div class="modal-content bg-white rounded-lg shadow-xl p-6"id="ulu-zwie">
+            <span class="close-btn" >&times;</span>
+            <h1 class="text-2xl font-bold mb-4 text-black" id="ulu-zwie-tekst"> Ulubione Zwierzęta </h1>
             <div id="favorite-animals-list">
                 <!-- Lista ulubionych zwierząt zostanie dynamicznie wstawiona tutaj -->
             </div>
