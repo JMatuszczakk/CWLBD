@@ -11,6 +11,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
+            transition: background-color 0.5s, color 0.5s;
         }
 
         .modal {
@@ -23,6 +24,7 @@
             height: 100%;
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s;
         }
 
         .modal-content {
@@ -33,6 +35,7 @@
             max-width: 500px;
             width: 90%;
             position: relative;
+            animation: slideIn 0.5s;
         }
 
         .close-btn {
@@ -49,6 +52,7 @@
             top: -50px;
             width: 100%;
             transition: top 0.3s;
+            animation: slideDown 0.5s;
         }
 
         #navbar a {
@@ -63,6 +67,45 @@
         #navbar a:hover {
             background-color: #ddd;
             color: black;
+        }
+
+        .dog-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .dog-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                top: -50px;
+            }
+
+            to {
+                top: 0;
+            }
         }
 
         #sidebar {
@@ -113,56 +156,69 @@
         @media (max-width: 768px) {
             h1 {
                 font-size: 4rem;
+                /* Zmniejsz rozmiar czcionki na mniejszych ekranach */
             }
 
             .container {
                 padding: 1rem;
+                /* Zmniejsz padding na mniejszych ekranach */
             }
 
             #dogs-gallery {
                 grid-template-columns: repeat(2, 1fr);
+                /* Zmień układ siatki na 2 kolumny */
             }
 
             .dog-info {
                 padding: 1rem;
+                /* Zmniejsz padding na mniejszych ekranach */
             }
 
             .dog-info h2 {
                 font-size: 1.25rem;
+                /* Zmniejsz rozmiar czcionki na mniejszych ekranach */
             }
 
             .dog-info p {
                 font-size: 0.875rem;
+                /* Zmniejsz rozmiar czcionki na mniejszych ekranach */
             }
 
             .modal-content {
                 margin: 5% auto;
+                /* Zmniejsz margines na mniejszych ekranach */
             }
         }
 
         @media (max-width: 480px) {
             h1 {
                 font-size: 3rem;
+                /* Jeszcze mniejszy rozmiar czcionki na bardzo małych ekranach */
             }
 
             #dogs-gallery {
                 grid-template-columns: 1fr;
+                /* Zmień układ siatki na 1 kolumnę */
             }
 
             .dog-info {
                 padding: 0.5rem;
+                /* Jeszcze mniejszy padding na bardzo małych ekranach */
             }
 
             .dog-info h2 {
                 font-size: 1rem;
+                /* Jeszcze mniejszy rozmiar czcionki na bardzo małych ekranach */
             }
 
             .dog-info p {
                 font-size: 0.75rem;
+                /* Jeszcze mniejszy rozmiar czcionki na bardzo małych ekranach */
             }
 
             .modal-content {
                 margin: 2% auto;
+                /* Jeszcze mniejszy margines na bardzo małych ekranach */
             }
         }
     </style>
@@ -202,6 +258,31 @@
                 const ulubione_tekst = document.getElementById('ulu-zwie-tekst');
                 const ulubione_tekst_maly = document.getElementById('favorite-animals-list');
 
+                // Check for dark mode cookie
+                if (getCookie('darkMode') === 'true') {
+                    toggleImage.src = '/zmiana_c.png';
+                    cartImage.src = '/wozek_c.png';
+                    arrowImage.src = '/strzalka_c.png';
+                    body.style.backgroundColor = '#041C32';
+                    title.style.color = '#ECB365';
+
+                    const dogInfoElements = document.querySelectorAll('.dog-info');
+                    const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
+                    dogInfoElements.forEach(element => {
+                        element.style.backgroundColor = '#064663';
+                        element.style.color = '#ECB365';
+                        element.classList.add('object-cover', 'rounded-b');
+                    });
+                    dogInfoTextElements.forEach(element => {
+                        element.style.color = '#a7732a';
+                    });
+                    szczegoly.style.backgroundColor = '#064663';
+                    szczegoly_tekst.style.color = '#ECB365';
+                    ulubione_bg.style.backgroundColor = '#064663';
+                    ulubione_tekst.style.Color = '#ECB365';
+                    ulubione_tekst_maly.style.Color = '#ECB365';
+                }
+
                 toggleImage.addEventListener('click', function () {
                     const dogInfoElements = document.querySelectorAll('.dog-info');
                     const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
@@ -223,9 +304,10 @@
                         szczegoly.style.backgroundColor = '#064663';
                         szczegoly_tekst.style.color = '#ECB365';
                         ulubione_bg.style.backgroundColor = '#064663';
-                        ulubione_tekst.style.Color = '#ECB365';
-                        ulubione_tekst_maly.style.Color = '#ECB365';
+                        ulubione_tekst.style.color = '#ECB365';
+                        ulubione_tekst_maly.style.color = '#ECB365';
 
+                        setCookie('darkMode', 'true', 7);
                     } else {
                         toggleImage.src = '/zmiana_b.png';
                         cartImage.src = '/wozek.png';
@@ -244,11 +326,37 @@
                         szczegoly.style.backgroundColor = 'white';
                         szczegoly_tekst.style.color = 'black';
                         ulubione_bg.style.backgroundColor = 'white';
-                        ulubione_tekst.style.Color = 'black';
-                        ulubione_tekst_maly.style.Color = 'black';
+                        ulubione_tekst.style.color = 'black';
+                        ulubione_tekst_maly.style.color = 'black';
+
+                        setCookie('darkMode', 'false', 7);
                     }
                 });
             });
+        </script>
+        <script>
+            function setCookie(name, value, days) {
+                const d = new Date();
+                d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + d.toUTCString();
+                document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            }
+
+            function getCookie(name) {
+                const cname = name + "=";
+                const decodedCookie = decodeURIComponent(document.cookie);
+                const ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(cname) == 0) {
+                        return c.substring(cname.length, c.length);
+                    }
+                }
+                return "";
+            }
         </script>
         <div id="dogs-gallery" class="grid grid-cols-4 gap-4">
             <!-- Karty psów będą dodawane tutaj -->
@@ -278,8 +386,8 @@
 
     <!-- Favorite Animals Modal -->
     <div id="favorite-animals-modal" class="modal">
-        <div class="modal-content bg-white rounded-lg shadow-xl p-6"id="ulu-zwie">
-            <span class="close-btn" >&times;</span>
+        <div class="modal-content bg-white rounded-lg shadow-xl p-6" id="ulu-zwie">
+            <span class="close-btn">&times;</span>
             <h1 class="text-2xl font-bold mb-4 text-black" id="ulu-zwie-tekst"> Ulubione Zwierzęta </h1>
             <div id="favorite-animals-list">
                 <!-- Lista ulubionych zwierząt zostanie dynamicznie wstawiona tutaj -->
@@ -337,7 +445,7 @@
                     // Stwórz karty psów
                     dogs.forEach(dog => {
                         const dogCard = document.createElement('div');
-                        dogCard.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer';
+                        dogCard.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
                         dogCard.innerHTML = `
                             <div class="p-0">
                                 <img 
