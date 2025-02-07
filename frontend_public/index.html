@@ -91,6 +91,8 @@
                 const arrowImage = document.getElementById('arrow-image');
                 const body = document.getElementById('body');
                 const title = document.getElementById('title');
+                const szczegoly = document.getElementById('dog-modal-details');
+                const szczegoly_tekst = document.getElementById('dog-details');
 
                 toggleImage.addEventListener('click', function () {
                     const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -101,10 +103,13 @@
                         body.style.backgroundColor = '#041C32';
                         title.style.color = '#ECB365';
                         dogInfoElements.forEach(element => {
-                            element.style.backgroundColor = '#333333'; 
+                            element.style.backgroundColor = '#064663'; 
                             element.style.color = '#ECB365';
                             element.classList.add('object-cover', 'rounded-b');
                         });
+                        szczegoly.style.backgroundColor = '#064663';
+                        szczegoly_tekst.style.color = '#ECB365';
+                        
                     } else {
                         toggleImage.src = '/zmiana_b.png';
                         cartImage.src = '/wozek.png';
@@ -115,6 +120,8 @@
                             element.style.backgroundColor = '#ffffff'; // Original background color
                             element.style.color = 'black';
                         });
+                        szczegoly.style.backgroundColor = 'white';
+                        szczegoly_tekst.style.color = 'black';
                     }
                 });
             });
@@ -126,7 +133,7 @@
 
     <!-- Modal ze szczegółami psa -->
     <div id="dog-modal" class="modal">
-        <div class="modal-content bg-white rounded-lg shadow-xl p-6">
+        <div class="modal-content bg-white rounded-lg shadow-xl p-6" id="dog-modal-details">
             <span class="close-btn">&times;</span>
             <div id="dog-details">
                 <!-- Szczegóły psa zostaną dynamicznie wstawione tutaj -->
