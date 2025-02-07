@@ -512,7 +512,7 @@
                                 var heartImage = document.getElementById('heartImage');
                                 var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
                                 var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
-                                addFavoriteAnimal(dog.number);
+
                                 if (isLiked) {
                                     heartImage.src = '/serce2.png';
                                     localStorage.setItem('heart-' + dog.number, 'false');
@@ -556,27 +556,6 @@
             });
         });
 
-        function addFavoriteAnimal(animal) {
-            const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
-            favoriteAnimals.push(animal);
-            localStorage.setItem('favoriteAnimals', JSON.stringify(favoriteAnimals));
-        }
-
-        function getFavoriteAnimals() {
-            return JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
-        }
-
-        function printFavoriteAnimals() {
-            const favoriteAnimals = getFavoriteAnimals();
-            if (favoriteAnimals.length === 0) {
-                console.log('Brak ulubionych zwierząt.');
-            } else {
-                console.log('Ulubione zwierzęta:');
-                favoriteAnimals.forEach(animal => {
-                    console.log(animal);
-                });
-            }
-        }
         document.addEventListener('DOMContentLoaded', function () {
             const favoriteIcon = document.getElementById('favorite-icon');
             const favoriteAnimalsModal = document.getElementById('favorite-animals-modal');
@@ -585,7 +564,6 @@
 
             favoriteIcon.addEventListener('click', function () {
                 const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
-
                 favoriteAnimalsList.innerHTML = '';
 
                 if (favoriteAnimals.length === 0) {

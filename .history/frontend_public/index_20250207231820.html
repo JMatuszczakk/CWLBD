@@ -248,8 +248,10 @@
     </button>
     <h2 class="text-lg font-semibold">Dynamic Top Bar</h2>
   </div>
-  <!-- Right side: user's existing icons/buttons -->
+  <!-- Right side: existing buttons -->
   <div class="flex items-center space-x-4">
+    <button class="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-200">Button 1</button>
+    <button class="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-200">Button 2</button>
     <button>
       <img src="/zmiana_b.png" alt="Serce" class="w-8 h-auto" id="toggle-image">
     </button>
@@ -512,7 +514,7 @@
                                 var heartImage = document.getElementById('heartImage');
                                 var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
                                 var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
-                                addFavoriteAnimal(dog.number);
+
                                 if (isLiked) {
                                     heartImage.src = '/serce2.png';
                                     localStorage.setItem('heart-' + dog.number, 'false');
@@ -556,27 +558,6 @@
             });
         });
 
-        function addFavoriteAnimal(animal) {
-            const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
-            favoriteAnimals.push(animal);
-            localStorage.setItem('favoriteAnimals', JSON.stringify(favoriteAnimals));
-        }
-
-        function getFavoriteAnimals() {
-            return JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
-        }
-
-        function printFavoriteAnimals() {
-            const favoriteAnimals = getFavoriteAnimals();
-            if (favoriteAnimals.length === 0) {
-                console.log('Brak ulubionych zwierząt.');
-            } else {
-                console.log('Ulubione zwierzęta:');
-                favoriteAnimals.forEach(animal => {
-                    console.log(animal);
-                });
-            }
-        }
         document.addEventListener('DOMContentLoaded', function () {
             const favoriteIcon = document.getElementById('favorite-icon');
             const favoriteAnimalsModal = document.getElementById('favorite-animals-modal');
@@ -585,7 +566,6 @@
 
             favoriteIcon.addEventListener('click', function () {
                 const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
-
                 favoriteAnimalsList.innerHTML = '';
 
                 if (favoriteAnimals.length === 0) {
