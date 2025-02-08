@@ -723,7 +723,7 @@
         }
 
         function getFavoriteAnimals() {
-            return JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
+            return JSON.parse(localStorage.getItem('favoriteAnimals')) || []; //TODO: do zrobienia renderowanie całych obiektów
         }
 
         function printFavoriteAnimals() {
