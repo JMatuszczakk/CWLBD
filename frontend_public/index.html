@@ -304,8 +304,10 @@
                 const leftSideNavbar = document.getElementById('left-side-navbar');
                 const rightSideNavbar = document.getElementById('right-side-navbar');
                 const settings = document.getElementById('settings-image');
+                const settings_popup = document.getElementById('settings-popup');
                 const filter = document.getElementById('filter-image');
                 const filter_input = document.getElementById('filter-input');
+            
 
                 function applyDarkMode() {
                     const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -335,6 +337,8 @@
                     ulubione_tekst.style.color = '#ECB365';
                     ulubione_tekst_maly.style.color = '#ECB365';
                     filter_input.style.backgroundColor = '#333';
+                    settings_popup.style.backgroundColor = '#333';
+                    settings_popup.style.color = '#ECB365';
                 }
 
                 function applyLightMode() {
@@ -364,6 +368,8 @@
                     ulubione_tekst.style.color = 'black';
                     ulubione_tekst_maly.style.color = 'black';
                     filter_input.style.backgroundColor = '#bad3f5';
+                    settings_popup.style.backgroundColor = '#bad3f5';
+                    settings_popup.style.color = 'black';
                 }
 
                 toggleImage.addEventListener('click', function () {
@@ -577,7 +583,7 @@
 
     <!-- Popup below settings button -->
     <div id="settings-popup"
-        class="hidden absolute right-0 mr-4 mt-4 bg-white rounded-lg shadow-xl p-4 w-[calc(100%-1rem)]">
+        class="hidden absolute right-0 mr-4 mt-4 bg-[#bad3f5] rounded-lg shadow-xl p-4 w-[calc(100%-1rem)]">
         <p>Settings options go here</p>
     </div>
 
