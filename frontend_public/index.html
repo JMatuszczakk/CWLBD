@@ -221,7 +221,6 @@
                 /* Jeszcze mniejszy margines na bardzo małych ekranach */
             }
         }
-
     </style>
 </head>
 
@@ -275,7 +274,7 @@
                 <button>
                     <img src="/filter_b.png" alt="filter" class="w-8 h-auto" id="filter-image">
                 </button>
-                <input type="text" id="filter-input" class="border rounded-lg p-2 w-auto" placeholder="Wpisz tekst...">
+                <input type="text" id="filter-input" class="border rounded-lg p-2" placeholder="Wpisz tekst...">
             </div>
         </div>
         <script>
@@ -507,58 +506,28 @@
             }
         </script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const filterInput = document.getElementById('filter-input');
-                const galleryContainer = document.getElementById('dogs-gallery');
-                let dogsData = [];
+            function setCookie(name, value, days) {
+                const d = new Date();
+                d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + d.toUTCString();
+                document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            }
 
-                filterInput.addEventListener('input', function () {
-                    const filterText = filterInput.value.toLowerCase();
-                    const filteredDogs = dogsData.filter(dog =>
-                        dog.name.toLowerCase().includes(filterText) ||
-                        dog.race.toLowerCase().includes(filterText) ||
-                        dog.color.toLowerCase().includes(filterText)
-                    );
-                    displayDogs(filteredDogs);
-                });
-
-                fetch('https://api.cwlbelchatow.nl/api/dogs')
-                    .then(response => response.json())
-                    .then(dogs => {
-                        dogsData = dogs;
-                        displayDogs(dogsData);
-                    })
-                    .catch(error => {
-                        console.error('Błąd podczas wczytywania psów:', error);
-                        galleryContainer.innerHTML = `
-                            <div class="col-span-full text-center text-red-600">
-                                Nie udało się wczytać psów. Prosimy spróbować ponownie później.
-                            </div>
-                        `;
-                    });
-
-                function displayDogs(dogs) {
-                    galleryContainer.innerHTML = '';
-                    dogs.forEach(dog => {
-                        const dogCard = document.createElement('div');
-                        dogCard.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
-                        dogCard.innerHTML = `
-                            <div class="p-0">
-                                <img 
-                                    src="${dog.photo}" 
-                                    alt="${dog.name}" 
-                                    class="w-full h-64 object-cover rounded-t"
-                                />
-                            </div>
-                            <div class="p-4 dog-info">
-                                <h2 class="text-xl font-bold">${dog.name}</h2>
-                                <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
-                            </div>
-                        `;
-                        galleryContainer.appendChild(dogCard);
-                    });
+            function getCookie(name) {
+                const cname = name + "=";
+                const decodedCookie = decodeURIComponent(document.cookie);
+                const ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(cname) == 0) {
+                        return c.substring(cname.length, c.length);
+                    }
                 }
-            });
+                return "";
+            }
         </script>
         <div id="dogs-gallery" class="grid grid-cols-4 gap-4">
             <!-- Karty psów będą dodawane tutaj -->
