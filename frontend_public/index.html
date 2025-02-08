@@ -386,75 +386,13 @@
                     window.location.href = 'https://www.google.com';
                 });
 
+                let dogsData = [];
+
                 fetch('https://api.cwlbelchatow.nl/api/dogs')
                     .then(response => response.json())
                     .then(dogs => {
-                        // Stwórz karty psów
-                        dogs.forEach(dog => {
-                            const dogCard = document.createElement('div');
-                            dogCard.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
-                            dogCard.innerHTML = `
-                                <div class="p-0">
-                                    <img 
-                                        src="${dog.photo}" 
-                                        alt="${dog.name}" 
-                                        class="w-full h-64 object-cover rounded-t"
-                                    />
-                                </div>
-                                <div class="p-4 dog-info">
-                                    <h2 class="text-xl font-bold">${dog.name}</h2>
-                                    <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
-                                </div>
-                            `;
-
-                            // Dodaj event kliknięcia, aby pokazać szczegóły psa
-                            dogCard.addEventListener('click', () => {
-                                modalDetails.innerHTML = `
-                                    <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
-                                    <img 
-                                        src="${dog.photo}" 
-                                        alt="${dog.name}" 
-                                        class="w-full h-96 object-cover rounded-lg mb-4"
-                                    />
-                                    <div class="space-y-2 relative">
-                                        <p><strong>Rasa:</strong> ${dog.race}</p>
-                                        <p><strong>Kolor:</strong> ${dog.color}</p>
-                                        <p><strong>Numer ID:</strong> ${dog.number}</p>
-                                        <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
-                                        <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
-                                        <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                            <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : '/serce2.png'}" alt="Serce" class="w-8 h-auto">
-                                        </button>
-                                    </div>
-                                `;
-                                modal.style.display = 'block';
-                                // Zapisz stan polubienia psa w localStorage
-                                document.getElementById('heartButton').addEventListener('click', function () {
-                                    var heartImage = document.getElementById('heartImage');
-                                    var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
-                                    var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
-                                    addFavoriteAnimal(dog.number);
-                                    if (isLiked) {
-                                        heartImage.src = '/serce2.png';
-                                        localStorage.setItem('heart-' + dog.number, 'false');
-                                        favouriteAnimals = favouriteAnimals.filter(function (animal) {
-                                            return animal !== dog.number;
-                                        });
-                                    } else {
-                                        heartImage.src = '/serce1.png';
-                                        localStorage.setItem('heart-' + dog.number, 'true');
-                                        if (!favouriteAnimals.includes(dog.number)) {
-                                            favouriteAnimals.push(dog.number);
-                                        }
-                                    }
-
-                                    localStorage.setItem('favouriteAnimals', JSON.stringify(favouriteAnimals));
-                                });
-                            });
-
-                            galleryContainer.appendChild(dogCard);
-                        });
-
+                        dogsData = dogs;
+                        displayDogs(dogs);
                         // Apply dark mode if the cookie is set
                         if (getCookie('darkMode') === 'true') {
                             applyDarkMode();
@@ -469,6 +407,84 @@
                         `;
                     });
 
+                function displayDogs(dogs) {
+                    galleryContainer.innerHTML = '';
+                    dogs.forEach(dog => {
+                        const dogCard = document.createElement('div');
+                        dogCard.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
+                        dogCard.innerHTML = `
+                            <div class="p-0">
+                                <img 
+                                    src="${dog.photo}" 
+                                    alt="${dog.name}" 
+                                    class="w-full h-64 object-cover rounded-t"
+                                />
+                            </div>
+                            <div class="p-4 dog-info">
+                                <h2 class="text-xl font-bold">${dog.name}</h2>
+                                <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
+                            </div>
+                        `;
+
+                        // Dodaj event kliknięcia, aby pokazać szczegóły psa
+                        dogCard.addEventListener('click', () => {
+                            modalDetails.innerHTML = `
+                                <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
+                                <img 
+                                    src="${dog.photo}" 
+                                    alt="${dog.name}" 
+                                    class="w-full h-96 object-cover rounded-lg mb-4"
+                                />
+                                <div class="space-y-2 relative">
+                                    <p><strong>Rasa:</strong> ${dog.race}</p>
+                                    <p><strong>Kolor:</strong> ${dog.color}</p>
+                                    <p><strong>Numer ID:</strong> ${dog.number}</p>
+                                    <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
+                                    <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
+                                    <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
+                                        <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : '/serce2.png'}" alt="Serce" class="w-8 h-auto">
+                                    </button>
+                                </div>
+                            `;
+                            modal.style.display = 'block';
+                            // Zapisz stan polubienia psa w localStorage
+                            document.getElementById('heartButton').addEventListener('click', function () {
+                                var heartImage = document.getElementById('heartImage');
+                                var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
+                                var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
+                                addFavoriteAnimal(dog.number);
+                                if (isLiked) {
+                                    heartImage.src = '/serce2.png';
+                                    localStorage.setItem('heart-' + dog.number, 'false');
+                                    favouriteAnimals = favouriteAnimals.filter(function (animal) {
+                                        return animal !== dog.number;
+                                    });
+                                } else {
+                                    heartImage.src = '/serce1.png';
+                                    localStorage.setItem('heart-' + dog.number, 'true');
+                                    if (!favouriteAnimals.includes(dog.number)) {
+                                        favouriteAnimals.push(dog.number);
+                                    }
+                                }
+
+                                localStorage.setItem('favouriteAnimals', JSON.stringify(favouriteAnimals));
+                            });
+                        });
+
+                        galleryContainer.appendChild(dogCard);
+                    });
+                }
+
+                filter_input.addEventListener('input', function () {
+                    const filterText = filter_input.value.toLowerCase();
+                    const filteredDogs = dogsData.filter(dog => 
+                        dog.name.toLowerCase().includes(filterText) || 
+                        dog.race.toLowerCase().includes(filterText) || 
+                        dog.color.toLowerCase().includes(filterText)
+                    );
+                    displayDogs(filteredDogs);
+                });
+
                 // Zamknij modal po kliknięciu przycisku zamknięcia
                 closeBtn.addEventListener('click', () => {
                     modal.style.display = 'none';
@@ -482,30 +498,6 @@
                 });
             });
 
-            function setCookie(name, value, days) {
-                const d = new Date();
-                d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-                const expires = "expires=" + d.toUTCString();
-                document.cookie = name + "=" + value + ";" + expires + ";path=/";
-            }
-
-            function getCookie(name) {
-                const cname = name + "=";
-                const decodedCookie = decodeURIComponent(document.cookie);
-                const ca = decodedCookie.split(';');
-                for (let i = 0; i < ca.length; i++) {
-                    let c = ca[i];
-                    while (c.charAt(0) == ' ') {
-                        c = c.substring(1);
-                    }
-                    if (c.indexOf(cname) == 0) {
-                        return c.substring(cname.length, c.length);
-                    }
-                }
-                return "";
-            }
-        </script>
-        <script>
             function setCookie(name, value, days) {
                 const d = new Date();
                 d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
