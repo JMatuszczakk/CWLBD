@@ -477,12 +477,17 @@
 
                 filter_input.addEventListener('input', function () {
                     const filterText = filter_input.value.toLowerCase();
-                    const filteredDogs = dogsData.filter(dog => 
-                        dog.name.toLowerCase().includes(filterText) || 
-                        dog.race.toLowerCase().includes(filterText) || 
+                    const filteredDogs = dogsData.filter(dog =>
+                        dog.name.toLowerCase().includes(filterText) ||
+                        dog.race.toLowerCase().includes(filterText) ||
                         dog.color.toLowerCase().includes(filterText)
                     );
                     displayDogs(filteredDogs);
+                    // apply dark mode if the cookie is set
+                    if (getCookie('darkMode') === 'true') {
+                        applyDarkMode();
+                    }
+
                 });
 
                 // Zamknij modal po kliknięciu przycisku zamknięcia
