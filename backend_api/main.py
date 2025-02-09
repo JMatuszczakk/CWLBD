@@ -9,6 +9,8 @@ CORS(app)
 import os
 from dotenv import load_dotenv
 import hashlib
+import uuid
+from datetime import datetime, timedelta
 load_dotenv()
 password = os.getenv('POSTGRES_PASSWORD')
 
@@ -87,7 +89,14 @@ def post_dog():
 def remove_dog():
     info = request.get_json()
     delete_dog(info['id'])
-
+"""
+the user sessions table:
+CREATE TABLE user_sessions (
+    user_id INTEGER NOT NULL,
+    session_key TEXT NOT NULL,
+    expiration_day DATE NOT NULL
+);
+"""
 @app.route('/api/users/login', methods=['POST'])
 def login():
     user = request.get_json()
@@ -95,11 +104,37 @@ def login():
     hashed_password = hashlib.sha256(user['password'].encode()).hexdigest()
     cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (user['username'], hashed_password))
     result = cursor.fetchone()
-    cursor.close()
     if result:
-        return jsonify({"message": "Zalogowano pomyślnie!"}), 200
+        session_key = str(uuid.uuid4())
+        expiration_day = datetime.now() + timedelta(days=1)
+        cursor.execute("INSERT INTO user_sessions (user_id, session_key, expiration_day) VALUES (%s, %s, %s)",
+                       (result[0], session_key, expiration_day))
+        g.connection.commit()
+        cursor.close()
+        return jsonify({"message": "Zalogowano pomyślnie!", "session_key": session_key}), 200
     else:
+        cursor.close()
         return jsonify({"message": "Niepoprawne dane logowania!"}), 401
+
+"""
+sample curl request:
+curl -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": "admin"}' http://localhost:5000/api/users/logout
+"""
+#the favourites and cart columns are JSON type
+@app.route('/api/users/register', methods=['POST'])
+def register():
+    user = request.get_json()
+    cursor = g.connection.cursor()
+    hashed_password = hashlib.sha256(user['password'].encode()).hexdigest()
+    cursor.execute("INSERT INTO public_users (email, password_hash, favourites, cart) VALUES (%s, %s, %s,%s)", (user['username'], hashed_password, '{}', '{}'))
+    g.connection.commit()
+    cursor.close()
+    return jsonify({"message": "Zarejestrowano pomyślnie!"}), 201
+"""
+sample curl request:
+curl -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": "admin"}' http://localhost:5000/api/users/register
+"""
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
