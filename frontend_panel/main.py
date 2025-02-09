@@ -190,7 +190,7 @@ if st.session_state['stage'] == 0:
 if st.session_state['stage'] == 1:
     with st.sidebar:
         selected = option_menu("CWLB", ["Lista zwierząt", 'Dodaj zwierzę', 'Usuń zwierzę', 'Dodaj użytkownika', 'Zmień dizajn', 'Serwer'], 
-        icons=['card-list', 'plus-lg', 'x-lg', 'person-plus', 'palette', 'power'], menu_icon="cast", default_index=0)
+        icons=['card-list', 'plus-lg', 'x-lg', 'person-plus', 'palette',], menu_icon="cast", default_index=0)
     if selected == "Lista zwierząt":
         animal_list()
     elif selected == "Dodaj zwierzę":
