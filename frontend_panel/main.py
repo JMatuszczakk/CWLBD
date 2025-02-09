@@ -5,6 +5,7 @@ import hashlib
 from streamlit_option_menu import option_menu
 import pandas
 import toml
+import subprocess
 
 st.title("CWL Bełchatów")
 print("Local db connection")
@@ -119,6 +120,24 @@ def register_user_form():
             st.success("Zarejestrowano")
             time.sleep(1)
             st.rerun()
+def serwer():
+    st.write("Konfiguracja serwera")
+    if st.button("Update"):
+        commands = [
+            "cd ~/CWLBD/frontend_public/",
+            "docker pull ghcr.io/jmatuszczakk/cwlb-frontend_public",
+            "docker compose down",
+            "docker compose up -d"
+        ]
+
+        for command in commands:
+            process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            stdout, stderr = process.communicate()
+            if process.returncode != 0:
+                st.error(f"Error executing command: {command}\n{stderr.decode('utf-8')}")
+            else:
+                st.write(f"Command executed successfully: {command}\n{stdout.decode('utf-8')}")
+
 
 def change_design():
     st.write("Wybierz kolory")
@@ -144,12 +163,17 @@ def change_design():
         textColor = st.color_picker("Kolor tekstu", textColor)
 
     config = f"""
+
+    
 [theme]
 primaryColor="{primaryColor}"
 backgroundColor="{backgroundColor}"
 secondaryBackgroundColor="{secondaryBackgroundColor}"
 textColor="{textColor}"
     """
+
+
+
     if st.button("Zapisz"):
         with open("./.streamlit/config.toml", "w") as f:
             f.write(config)
@@ -165,8 +189,8 @@ if st.session_state['stage'] == 0:
 
 if st.session_state['stage'] == 1:
     with st.sidebar:
-        selected = option_menu("CWLB", ["Lista zwierząt", 'Dodaj zwierzę', 'Usuń zwierzę', 'Dodaj użytkownika', 'Zmień dizajn'], 
-        icons=['card-list', 'plus-lg', 'x-lg', 'person-plus'], menu_icon="cast", default_index=0)
+        selected = option_menu("CWLB", ["Lista zwierząt", 'Dodaj zwierzę', 'Usuń zwierzę', 'Dodaj użytkownika', 'Zmień dizajn', 'Serwer'], 
+        icons=['card-list', 'plus-lg', 'x-lg', 'person-plus', 'palette', 'power'], menu_icon="cast", default_index=0)
     if selected == "Lista zwierząt":
         animal_list()
     elif selected == "Dodaj zwierzę":
@@ -177,3 +201,5 @@ if st.session_state['stage'] == 1:
         register_user_form()
     elif selected == "Zmień dizajn":
         change_design()
+    elif selected == "Serwer":
+        serwer()
