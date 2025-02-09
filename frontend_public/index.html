@@ -261,6 +261,20 @@
             object-fit: cover;
             /* Ensure the image covers the entire area */
         }
+
+        @media (max-width: 768px) {
+            .dog-card img {
+                height: 200px;
+                /* Adjust height for tablets and small screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dog-card img {
+                height: 150px;
+                /* Adjust height for mobile devices */
+            }
+        }
     </style>
 </head>
 
@@ -448,7 +462,7 @@
                     galleryContainer.innerHTML = '';
                     dogs.forEach(dog => {
                         const dogCard = document.createElement('div');
-                        dogCard.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
+                        dogCard.className = 'rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
                         dogCard.innerHTML = `
                             <div class="p-0">
                                 <img 
