@@ -17,7 +17,7 @@ password = os.getenv('POSTGRES_PASSWORD')
 def create_connection():
     try:
         connection = psycopg2.connect(
-            host='104.248.18.162',
+            host='db',
             user='postgres',
             password=password,
             database='postgres'
