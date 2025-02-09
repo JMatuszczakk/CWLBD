@@ -8,6 +8,7 @@ CORS(app)
 
 import os
 from dotenv import load_dotenv
+import hashlib
 load_dotenv()
 password = os.getenv('POSTGRES_PASSWORD')
 
@@ -86,6 +87,19 @@ def post_dog():
 def remove_dog():
     info = request.get_json()
     delete_dog(info['id'])
+
+@app.route('/api/users/login', methods=['POST'])
+def login():
+    user = request.get_json()
+    cursor = g.connection.cursor()
+    hashed_password = hashlib.sha256(user['password'].encode()).hexdigest()
+    cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (user['username'], hashed_password))
+    result = cursor.fetchone()
+    cursor.close()
+    if result:
+        return jsonify({"message": "Zalogowano pomyślnie!"}), 200
+    else:
+        return jsonify({"message": "Niepoprawne dane logowania!"}), 401
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)

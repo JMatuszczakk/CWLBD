@@ -363,7 +363,7 @@
                 const settings_popup = document.getElementById('settings-popup');
                 const filter = document.getElementById('filter-image');
                 const filter_input = document.getElementById('filter-input');
-                
+
 
 
                 function applyDarkMode() {
@@ -726,41 +726,32 @@
                                     </button>
                                 </div>
                             `;
-                            modal.style.display = 'block';
-                            // Zapisz stan polubienia psa w localStorage
-                            document.getElementById('heartButton').addEventListener('click', function () {
-                                var heartImage = document.getElementById('heartImage');
-                                var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
-                                var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
-                                addFavoriteAnimal(dog.number);
-                                if (isLiked) {
-                                    heartImage.src = '/serce2_b.png';
-                                    localStorage.setItem('heart-' + dog.number, 'false');
-                                    favouriteAnimals = favouriteAnimals.filter(function (animal) {
-                                        return animal !== dog.number;
-                                    });
-                                } else {
-                                    heartImage.src = '/serce1.png';
-                                    localStorage.setItem('heart-' + dog.number, 'true');
-                                    if (!favouriteAnimals.includes(dog.number)) {
-                                        favouriteAnimals.push(dog.number);
-                                    }
-                                }
+                modal.style.display = 'block';
+                // Zapisz stan polubienia psa w localStorage
+                document.getElementById('heartButton').addEventListener('click', function () {
+                    var heartImage = document.getElementById('heartImage');
+                    var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
+                    var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
+                    addFavoriteAnimal(dog.number);
+                    if (isLiked) {
+                        heartImage.src = '/serce2_b.png';
+                        localStorage.setItem('heart-' + dog.number, 'false');
+                        favouriteAnimals = favouriteAnimals.filter(function (animal) {
+                            return animal !== dog.number;
+                        });
+                    } else {
+                        heartImage.src = '/serce1.png';
+                        localStorage.setItem('heart-' + dog.number, 'true');
+                        if (!favouriteAnimals.includes(dog.number)) {
+                            favouriteAnimals.push(dog.number);
+                        }
+                    }
 
                     localStorage.setItem('favouriteAnimals', JSON.stringify(favouriteAnimals));
                 });
             });
 
             galleryContainer.appendChild(dogCard);
-        });
-                })
-                .catch (error => {
-            console.error('Błąd podczas wczytywania psów:', error);
-            galleryContainer.innerHTML = `
-                        <div class="col-span-full text-center text-red-600">
-                            Nie udało się wczytać psów. Prosimy spróbować ponownie później.
-                        </div>
-                    `;
         });
 
         // Zamknij modal po kliknięciu przycisku zamknięcia
@@ -774,7 +765,7 @@
                 modal.style.display = 'none';
             }
         });
-        });
+
 
         function addFavoriteAnimal(animal) {
             const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
