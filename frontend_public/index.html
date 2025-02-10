@@ -685,27 +685,6 @@
                 window.location.href = 'https://www.google.com';
             });
 
-            // fetch('https://api.cwlbelchatow.nl/api/dogs')
-            //     .then(response => response.json())
-            //     .then(dogs => {
-            //         // Stwórz karty psów
-            //         dogs.forEach(dog => {
-            //             const dogCard = document.createElement('div');
-            //             dogCard.className = 'bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
-            //             dogCard.innerHTML = `
-            //                 <div class="p-0">
-            //                     <img 
-            //                         src="${dog.photo}" 
-            //                         alt="${dog.name}" 
-            //                         class="w-full h-64 object-cover rounded-t"
-            //                     />
-            //                 </div>
-            //                 <div class="p-4 dog-info">
-            //                     <h2 class="text-xl font-bold">${dog.name}</h2>
-            //                     <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
-            //                 </div>
-            //             `;
-
             // Dodaj event kliknięcia, aby pokazać szczegóły psa
             dogCard.addEventListener('click', () => {
                 modalDetails.innerHTML = `
