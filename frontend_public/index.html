@@ -518,7 +518,7 @@
                                     <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
                                     <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
                                     <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
+                                        <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
                                     </button>
                                 </div>
                             `;
@@ -530,7 +530,7 @@
                                 var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
                                 addFavoriteAnimal(dog.number);
                                 if (isLiked) {
-                                    heartImage.src = '/serce2_b.png';
+                                    heartImage.src = getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png';
                                     localStorage.setItem('heart-' + dog.number, 'false');
                                     favouriteAnimals = favouriteAnimals.filter(function (animal) {
                                         return animal !== dog.number;
