@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
             element.style.color = 'black';
         });
         dogInfoTextElements.forEach(element => {
-            element.style.color = 'gray-600';
+            element.style.color = 'gray';
             element.classList.remove('text-white');
             element.classList.add('text-gray-600');
         });
