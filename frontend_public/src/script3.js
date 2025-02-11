@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = 'https://www.google.com';
     });
 
+    ss
     // Dodaj event kliknięcia, aby pokazać szczegóły psa
     dogCard.addEventListener('click', () => {
         modalDetails.innerHTML = `
