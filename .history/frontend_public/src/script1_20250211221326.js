@@ -1,3 +1,6 @@
+//// filepath: /D:/gti_projekty/CWLBD/frontend_public/src/script1.js
+// ...existing code...
+
 document.addEventListener('DOMContentLoaded', function () {
     const toggleImage = document.getElementById('toggle-image');
     const cartImage = document.getElementById('cart-image');
@@ -153,23 +156,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
             dogCard.addEventListener('click', () => {
                 modalDetails.innerHTML = `
-                                <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
-                                <img 
-                                    src="${dog.photo}" 
-                                    alt="${dog.name}" 
-                                    class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"
-                                />
-                                <div class="space-y-2 relative">
-                                    <p><strong>Rasa:</strong> ${dog.race}</p>
-                                    <p><strong>Kolor:</strong> ${dog.color}</p>
-                                    <p><strong>Numer ID:</strong> ${dog.number}</p>
-                                    <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
-                                    <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
-                                    <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
-                                    </button>
-                                </div>
-                            `;
+                    <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
+                    <img 
+                        src="${dog.photo}" 
+                        alt="${dog.name}" 
+                        class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"
+                    />
+                    <div class="p-4 dog-info rounded-b-lg">
+                        <h2 class="text-xl font-bold">${dog.name}</h2>
+                        <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
+                    </div>
+                    <div class="space-y-2 relative">
+                        <p><strong>Rasa:</strong> ${dog.race}</p>
+                        <p><strong>Kolor:</strong> ${dog.color}</p>
+                        <p><strong>Numer ID:</strong> ${dog.number}</p>
+                        <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
+                        <button id="addToCartButton" class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
+                        <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
+                            <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
+                        </button>
+                    </div>
+                `;
                 modal.style.display = 'block';
 
                 // Obsługa przycisku "Dodaj do koszyka"
@@ -192,32 +199,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!isAlreadyInCart) {
                         cartItems.push(dogData);
                         localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-                        // Użyj SweetAlert2 zamiast alert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Dodano do koszyka!',
-                            text: `${dog.name} został dodany do koszyka.`,
-                            confirmButtonText: 'OK',
-                            customClass: {
-                                popup: 'custom-swal-popup',
-                                confirmButton: 'custom-swal-button'
-                            }
-                        });
+                        alert(`${dog.name} został dodany do koszyka!`);
                     } else {
-                        // Użyj SweetAlert2 zamiast alert
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Uwaga!',
-                            text: `${dog.name} jest już w koszyku.`,
-                            confirmButtonText: 'OK',
-                            customClass: {
-                                popup: 'custom-swal-popup',
-                                confirmButton: 'custom-swal-button'
-                            }
-                        });
+                        alert(`${dog.name} jest już w koszyku!`);
                     }
-
                     updateCartIcon();
                 });
 
@@ -261,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// ...existing code...
 function setCookie(name, value, days) {
     const d = new Date();
     d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -284,11 +270,14 @@ function getCookie(name) {
     return "";
 }
 
-function updateCartIcon() {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const cartImage = document.getElementById('cart-image');
-
-    if (cartItems.length > 0) {
-        cartImage.setAttribute('data-count', cartItems.length); // Dodaj liczbę przedmi
+// Fix for scroll code:
+let prevScrollpos = window.pageYOffset;
+window.onscroll = function () {
+    const currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+        // Show top bar
+    } else {
+        // Hide top bar
     }
-}
+    prevScrollpos = currentScrollPos;
+};

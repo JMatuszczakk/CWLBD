@@ -153,23 +153,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
             dogCard.addEventListener('click', () => {
                 modalDetails.innerHTML = `
-                                <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
-                                <img 
-                                    src="${dog.photo}" 
-                                    alt="${dog.name}" 
-                                    class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"
-                                />
-                                <div class="space-y-2 relative">
-                                    <p><strong>Rasa:</strong> ${dog.race}</p>
-                                    <p><strong>Kolor:</strong> ${dog.color}</p>
-                                    <p><strong>Numer ID:</strong> ${dog.number}</p>
-                                    <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
-                                    <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
-                                    <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
-                                    </button>
-                                </div>
-                            `;
+                    <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
+                    <img 
+                        src="${dog.photo}" 
+                        alt="${dog.name}" 
+                        class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"
+                    />
+                    <div class="p-4 dog-info rounded-b-lg">
+                        <h2 class="text-xl font-bold">${dog.name}</h2>
+                        <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
+                    </div>
+                    <div class="space-y-2 relative">
+                        <p><strong>Rasa:</strong> ${dog.race}</p>
+                        <p><strong>Kolor:</strong> ${dog.color}</p>
+                        <p><strong>Numer ID:</strong> ${dog.number}</p>
+                        <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
+                        <button id="addToCartButton" class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
+                        <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
+                            <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
+                        </button>
+                    </div>
+                `;
                 modal.style.display = 'block';
 
                 // Obsługa przycisku "Dodaj do koszyka"
@@ -290,5 +294,3 @@ function updateCartIcon() {
 
     if (cartItems.length > 0) {
         cartImage.setAttribute('data-count', cartItems.length); // Dodaj liczbę przedmi
-    }
-}
