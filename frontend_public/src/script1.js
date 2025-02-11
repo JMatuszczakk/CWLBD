@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const loginImage = document.getElementById('login-image');
     const loginModal = document.getElementById('login-modal');
     const loginModalContent = document.querySelector('#login-modal .modal-content');
+    const loginModal_username = document.getElementById('login-username');
+    const loginModal_password = document.getElementById('login-password');
 
     function applyDarkMode() {
         const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -51,6 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
         settings_popup.style.color = '#ECB365';
         loginModalContent.style.backgroundColor = '#064663';
         loginModalContent.style.color = '#ECB365';
+        loginModal_username.style.backgroundColor = '#333';
+        loginModal_password.style.backgroundColor = '#333';
     }
 
     function applyLightMode() {
@@ -85,6 +89,8 @@ document.addEventListener('DOMContentLoaded', function () {
         settings_popup.style.color = 'black';
         loginModalContent.style.backgroundColor = 'white';
         loginModalContent.style.color = 'black';
+        loginModal_username.style.backgroundColor = '#bad3f5';
+        loginModal_password.style.backgroundColor = '#bad3f5';
     }
 
     toggleImage.addEventListener('click', function () {
