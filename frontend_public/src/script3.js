@@ -79,7 +79,7 @@ window.onscroll = function () { scrollFunction() };
 // document.getElementById("navbar").style.top = "0"
 
 document.addEventListener('DOMContentLoaded', function () {
-    const loginButton = document.getElementById('login-button');
+    const loginButton = document.getElementById('login-image');
     const loginModal = document.getElementById('login-modal');
     const closeBtn = loginModal.querySelector('.close-btn');
 

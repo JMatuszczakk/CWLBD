@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const filter = document.getElementById('filter-image');
     const filter_input = document.getElementById('filter-input');
     const loginImage = document.getElementById('login-image');
-
-
+    const loginModal = document.getElementById('login-modal');
+    const loginModalContent = document.querySelector('#login-modal .modal-content');
 
     function applyDarkMode() {
         const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         arrowImage.src = '/strzalka_c.png';
         settings.src = '/settings_c.png';
         filter.src = '/filter_c.png';
+        loginImage.src = '/account_d.png';
         body.style.backgroundColor = '#041C32';
         title.style.color = '#ECB365';
         leftSideNavbar.style.backgroundColor = '#333';
@@ -48,7 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
         filter_input.style.backgroundColor = '#333';
         settings_popup.style.backgroundColor = '#333';
         settings_popup.style.color = '#ECB365';
-
+        loginModalContent.style.backgroundColor = '#064663';
+        loginModalContent.style.color = '#ECB365';
     }
 
     function applyLightMode() {
@@ -56,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const dogInfoTextElements = document.querySelectorAll('.dog-info-text');
         toggleImage.src = '/zmiana_b.png';
         cartImage.src = '/wozek.png';
+        loginImage.src = '/account_w.png';
         arrowImage.src = '/strzalka_back.png';
         settings.src = '/settings_b.png';
         filter.src = '/filter_b.png';
@@ -80,6 +83,8 @@ document.addEventListener('DOMContentLoaded', function () {
         filter_input.style.backgroundColor = '#bad3f5';
         settings_popup.style.backgroundColor = '#bad3f5';
         settings_popup.style.color = 'black';
+        loginModalContent.style.backgroundColor = 'white';
+        loginModalContent.style.color = 'black';
     }
 
     toggleImage.addEventListener('click', function () {
