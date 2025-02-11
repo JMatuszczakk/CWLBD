@@ -267,3 +267,59 @@ function getCookie(name) {
     }
     return "";
 }
+//curl -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": "admin"}' http://localhost:5010/api/users/login
+// {
+//     "message": "Zalogowano pomy\u015blnie!",
+//     "session_key": "33637703-2b87-4d13-ab44-4829961dad75"
+//   }
+document.addEventListener('DOMContentLoaded', function () {
+
+    async function getSession(username, password) {
+        try {
+            const response = await fetch('https://api.cwlbelchatow.nl/api/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: username, password: password }),
+            });
+
+            const data = await response.json();
+            //if (data.message) contains "Niepoprawne dane logowania!" 
+            if (data.message === "Niepoprawne dane logowania!") {
+                console.error('Błąd podczas logowania:', data.message);
+                return "error";
+            }
+            console.log('Zalogowano pomyślnie:', data);
+            localStorage.setItem('sessionKey', data.session_key);
+            return "success";
+        } catch (error) {
+            console.error('Błąd podczas logowania:', error);
+            return "error";
+        }
+    }
+
+    const loginButton = document.getElementById('login-submit');
+    const loginModal = document.getElementById('login-modal');
+    loginButton.addEventListener('click', async function () {
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+        const result = await getSession(username, password);
+
+        if (result === "success") {
+            Swal.fire({
+                icon: 'success',
+                title: 'Zalogowano pomyślnie!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            loginModal.style.display = 'none';
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Błąd logowania!',
+                text: 'Spróbuj ponownie.',
+            });
+        }
+    });
+});
