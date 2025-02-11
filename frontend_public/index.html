@@ -135,29 +135,6 @@
                 }
             });
 
-            const favoriteIcon = document.getElementById('favorite-icon');
-            const favoriteAnimalsModal = document.getElementById('favorite-animals-modal');
-            const closeBtns = document.querySelectorAll('.close-btn');
-            const favoriteAnimalsList = document.getElementById('favorite-animals-list');
-
-            favoriteIcon.addEventListener('click', function () {
-                const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
-
-                favoriteAnimalsList.innerHTML = '';
-
-                if (favoriteAnimals.length === 0) {
-                    favoriteAnimalsList.innerHTML = '<p>Brak ulubionych zwierząt.</p>';
-                } else {
-                    favoriteAnimals.forEach(animal => {
-                        const animalItem = document.createElement('div');
-                        animalItem.textContent = animal;
-                        favoriteAnimalsList.appendChild(animalItem);
-                    });
-                }
-
-                favoriteAnimalsModal.style.display = 'block';
-            });
-
             closeBtns.forEach(btn => {
                 btn.addEventListener('click', function () {
                     favoriteAnimalsModal.style.display = 'none';
