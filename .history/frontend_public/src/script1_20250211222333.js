@@ -294,5 +294,3 @@ function updateCartIcon() {
 
     if (cartItems.length > 0) {
         cartImage.setAttribute('data-count', cartItems.length); // Dodaj liczbę przedmi
-    }
-}

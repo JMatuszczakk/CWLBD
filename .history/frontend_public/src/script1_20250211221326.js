@@ -1,3 +1,6 @@
+//// filepath: /D:/gti_projekty/CWLBD/frontend_public/src/script1.js
+// ...existing code...
+
 document.addEventListener('DOMContentLoaded', function () {
     const toggleImage = document.getElementById('toggle-image');
     const cartImage = document.getElementById('cart-image');
@@ -196,32 +199,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!isAlreadyInCart) {
                         cartItems.push(dogData);
                         localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
-                        // Użyj SweetAlert2 zamiast alert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Dodano do koszyka!',
-                            text: `${dog.name} został dodany do koszyka.`,
-                            confirmButtonText: 'OK',
-                            customClass: {
-                                popup: 'custom-swal-popup',
-                                confirmButton: 'custom-swal-button'
-                            }
-                        });
+                        alert(`${dog.name} został dodany do koszyka!`);
                     } else {
-                        // Użyj SweetAlert2 zamiast alert
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Uwaga!',
-                            text: `${dog.name} jest już w koszyku.`,
-                            confirmButtonText: 'OK',
-                            customClass: {
-                                popup: 'custom-swal-popup',
-                                confirmButton: 'custom-swal-button'
-                            }
-                        });
+                        alert(`${dog.name} jest już w koszyku!`);
                     }
-
                     updateCartIcon();
                 });
 
@@ -265,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+// ...existing code...
 function setCookie(name, value, days) {
     const d = new Date();
     d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -288,11 +270,14 @@ function getCookie(name) {
     return "";
 }
 
-function updateCartIcon() {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const cartImage = document.getElementById('cart-image');
-
-    if (cartItems.length > 0) {
-        cartImage.setAttribute('data-count', cartItems.length); // Dodaj liczbę przedmi
+// Fix for scroll code:
+let prevScrollpos = window.pageYOffset;
+window.onscroll = function () {
+    const currentScrollPos = window.pageYOffset;
+    if (prevScrollpos > currentScrollPos) {
+        // Show top bar
+    } else {
+        // Hide top bar
     }
-}
+    prevScrollpos = currentScrollPos;
+};
