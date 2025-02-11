@@ -164,10 +164,6 @@ document.addEventListener('DOMContentLoaded', function () {
                                     alt="${dog.name}" 
                                     class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"
                                 />
-                                <div class="p-4 dog-info rounded-b-lg">
-                                    <h2 class="text-xl font-bold">${dog.name}</h2>
-                                    <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
-                                </div>
                                 <div class="space-y-2 relative">
                                     <p><strong>Rasa:</strong> ${dog.race}</p>
                                     <p><strong>Kolor:</strong> ${dog.color}</p>
