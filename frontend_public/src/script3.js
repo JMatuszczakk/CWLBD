@@ -76,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 window.onscroll = function () { scrollFunction() };
-// document.getElementById("navbar").style.top = "0"
 
 document.addEventListener('DOMContentLoaded', function () {
     const loginButton = document.getElementById('login-image');
