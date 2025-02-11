@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             element.style.color = 'black';
         });
         dogInfoTextElements.forEach(element => {
-            element.style.color = 'black';
+            element.style.color = 'gray-600';
             element.classList.remove('text-white');
             element.classList.add('text-gray-600');
         });
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     class="w-full h-64 object-cover rounded-t"
                                 />
                             </div>
-                            <div class="p-4 dog-info rounded-b">
+                            <div class="p-4 dog-info rounded-b" style="background-color: ${getCookie('darkMode') === 'true' ? '#064663' : '#ffffff'};}">
                                 <h2 class="text-xl font-bold">${dog.name}</h2>
                                 <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
                             </div>
