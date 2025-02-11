@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const galleryContainer = document.getElementById('dogs-gallery');
     const modal = document.getElementById('dog-modal');
-    const modalDetails = document.getElementById('dog-details');
+    const modalDetails = document.getElementById('dog-details');//
     const closeBtn = document.querySelector('.close-btn');
     const cookieConsentModal = document.getElementById('cookie-consent-modal');
     const acceptCookiesBtn = document.getElementById('accept-cookies');
