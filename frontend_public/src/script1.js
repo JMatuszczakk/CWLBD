@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const settings_popup = document.getElementById('settings-popup');
     const filter = document.getElementById('filter-image');
     const filter_input = document.getElementById('filter-input');
+    const loginImage = document.getElementById('login-image');
 
 
 
@@ -47,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         filter_input.style.backgroundColor = '#333';
         settings_popup.style.backgroundColor = '#333';
         settings_popup.style.color = '#ECB365';
+
     }
 
     function applyLightMode() {

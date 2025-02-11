@@ -34,6 +34,10 @@
                 <img src="/wozek.png" alt="wozek" class="w-8 h-auto" id="cart-image">
             </button>
             <button>
+                <img src="/account_w.png" alt="login" class="w-8 h-auto" id="login-image">
+            </button>
+
+            <button>
                 <img src="/settings_b.png" alt="settings" class="w-8 h-auto" id="settings-image">
             </button>
         </div>
@@ -81,6 +85,18 @@
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Tak</button>
             <button id="reject-cookies"
                 class="bg-red-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-red-700">Nie</button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content bg-white rounded-lg shadow-xl p-6">
+            <span class="close-btn">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Login</h2>
+            <input type="text" id="login-username" placeholder="Username" class="mb-4 p-2 border rounded-lg w-full">
+            <input type="password" id="login-password" placeholder="Password" class="mb-4 p-2 border rounded-lg w-full">
+            <button id="login-submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Submit</button>
         </div>
     </div>
 

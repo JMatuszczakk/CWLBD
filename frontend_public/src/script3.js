@@ -78,3 +78,22 @@ document.addEventListener('DOMContentLoaded', function () {
 window.onscroll = function () { scrollFunction() };
 // document.getElementById("navbar").style.top = "0"
 
+document.addEventListener('DOMContentLoaded', function () {
+    const loginButton = document.getElementById('login-button');
+    const loginModal = document.getElementById('login-modal');
+    const closeBtn = loginModal.querySelector('.close-btn');
+
+    loginButton.addEventListener('click', function () {
+        loginModal.style.display = 'block';
+    });
+
+    closeBtn.addEventListener('click', function () {
+        loginModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target === loginModal) {
+            loginModal.style.display = 'none';
+        }
+    });
+});
