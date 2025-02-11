@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
     const toggleImage = document.getElementById('toggle-image');
     const cartImage = document.getElementById('cart-image');
@@ -15,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const settings_popup = document.getElementById('settings-popup');
     const filter = document.getElementById('filter-image');
     const filter_input = document.getElementById('filter-input');
+
+
 
     function applyDarkMode() {
         const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -87,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+
     const galleryContainer = document.getElementById('dogs-gallery');
     const modal = document.getElementById('dog-modal');
     const modalDetails = document.getElementById('dog-details');
@@ -126,10 +130,10 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => {
             console.error('Błąd podczas wczytywania psów:', error);
             galleryContainer.innerHTML = `
-                <div class="col-span-full text-center text-red-600">
-                    Nie udało się wczytać psów. Prosimy spróbować ponownie później.
-                </div>
-            `;
+                            <div class="col-span-full text-center text-red-600">
+                                Nie udało się wczytać psów. Prosimy spróbować ponownie później.
+                            </div>
+                        `;
         });
 
     function displayDogs(dogs) {
@@ -138,127 +142,117 @@ document.addEventListener('DOMContentLoaded', function () {
             const dogCard = document.createElement('div');
             dogCard.className = 'rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
             dogCard.innerHTML = `
-                <div class="p-0">
-                    <img 
-                        src="${dog.photo}" 
-                        alt="${dog.name}" 
-                        class="w-full h-64 object-cover rounded-t"
-                    />
-                </div>
-                <div class="p-4 dog-info rounded-b">
-                    <h2 class="text-xl font-bold">${dog.name}</h2>
-                    <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
-                </div>
-            `;
-
-            dogCard.addEventListener('click', () => {
-                modalDetails.innerHTML = `
-                                <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
+                            <div class="p-0">
                                 <img 
                                     src="${dog.photo}" 
                                     alt="${dog.name}" 
-                                    class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"
+                                    class="w-full h-64 object-cover rounded-t"
                                 />
-                                <div class="space-y-2 relative">
-                                    <p><strong>Rasa:</strong> ${dog.race}</p>
-                                    <p><strong>Kolor:</strong> ${dog.color}</p>
-                                    <p><strong>Numer ID:</strong> ${dog.number}</p>
-                                    <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
-                                    <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
-                                    <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
-                                    </button>
-                                </div>
-                            `;
-                modal.style.display = 'block';
+                            </div>
+                            <div class="p-4 dog-info rounded-b">
+                                <h2 class="text-xl font-bold">${dog.name}</h2>
+                                <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
+                            </div>
+                        `;
 
-                // Obsługa przycisku "Dodaj do koszyka"
-                const addToCartButton = document.getElementById('addToCartButton');
-                addToCartButton.addEventListener('click', function (event) {
-                    event.stopPropagation();
+            // Dodaj event kliknięcia, aby pokazać szczegóły psa
+// Dodaj event kliknięcia, aby pokazać szczegóły psa
+dogCard.addEventListener('click', () => {
+    modalDetails.innerHTML = `
+        <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
+        <img 
+            src="${dog.photo}" 
+            alt="${dog.name}" 
+            class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"
+        />
+        <div class="p-4 dog-info rounded-b-lg">
+            <h2 class="text-xl font-bold">${dog.name}</h2>
+            <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
+        </div>
+        <div class="space-y-2 relative">
+            <p><strong>Rasa:</strong> ${dog.race}</p>
+            <p><strong>Kolor:</strong> ${dog.color}</p>
+            <p><strong>Numer ID:</strong> ${dog.number}</p>
+            <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
+            <button id="addToCartButton" class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
+            <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
+                <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
+            </button>
+        </div>
+    `;
+    modal.style.display = 'block';
 
-                    const dogData = {
-                        name: dog.name,
-                        photo: dog.photo,
-                        race: dog.race,
-                        color: dog.color,
-                        number: dog.number,
-                        illnesses: dog.illnesses || 'Zdrowy'
-                    };
+    // Obsługa kliknięcia przycisku "Dodaj do koszyka"
+    const addToCartButton = document.getElementById('addToCartButton');
+    addToCartButton.addEventListener('click', function (event) {
+        event.stopPropagation(); // Zapobiega propagacji zdarzenia do nadrzędnego elementu (dogCard)
 
-                    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-                    const isAlreadyInCart = cartItems.some(item => item.number === dog.number);
+        // Pobierz dane psa
+        const dogData = {
+            name: dog.name,
+            photo: dog.photo,
+            race: dog.race,
+            color: dog.color,
+            number: dog.number,
+            illnesses: dog.illnesses || 'Zdrowy'
+        };
 
-                    if (!isAlreadyInCart) {
-                        cartItems.push(dogData);
-                        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        // Pobierz aktualną zawartość koszyka z localStorage
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-                        // Użyj SweetAlert2 zamiast alert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Dodano do koszyka!',
-                            text: `${dog.name} został dodany do koszyka.`,
-                            confirmButtonText: 'OK',
-                            customClass: {
-                                popup: 'custom-swal-popup',
-                                confirmButton: 'custom-swal-button'
-                            }
-                        });
-                    } else {
-                        // Użyj SweetAlert2 zamiast alert
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Uwaga!',
-                            text: `${dog.name} jest już w koszyku.`,
-                            confirmButtonText: 'OK',
-                            customClass: {
-                                popup: 'custom-swal-popup',
-                                confirmButton: 'custom-swal-button'
-                            }
-                        });
-                    }
+        // Sprawdź, czy pies już jest w koszyku
+        const isAlreadyInCart = cartItems.some(item => item.number === dog.number);
 
-                    updateCartIcon();
-                });
+        if (!isAlreadyInCart) {
+            // Dodaj psa do koszyka
+            cartItems.push(dogData);
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
-                // Obsługa przycisku "Serce" (ulubione)
-                document.getElementById('heartButton').addEventListener('click', function () {
-                    const heartImage = document.getElementById('heartImage');
-                    const isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
-                    let favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
+            // Powiadom użytkownika
+            alert(`${dog.name} został dodany do koszyka!`);
+        } else {
+            alert(`${dog.name} jest już w koszyku!`);
+        }
 
-                    if (isLiked) {
-                        // Usuń z ulubionych
-                        heartImage.src = getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png';
-                        localStorage.setItem('heart-' + dog.number, 'false');
-                        favoriteAnimals = favoriteAnimals.filter(animal => animal !== dog.number);
-                    } else {
-                        // Dodaj do ulubionych
-                        heartImage.src = '/serce1.png';
-                        localStorage.setItem('heart-' + dog.number, 'true');
-                        if (!favoriteAnimals.includes(dog.number)) {
-                            favoriteAnimals.push(dog.number);
-                        }
-                    }
-                    localStorage.setItem('favoriteAnimals', JSON.stringify(favoriteAnimals));
-                });
+        // Zaktualizuj ikonę koszyka (np. liczbę przedmiotów)
+        updateCartIcon();
+    });
+
+    // Obsługa kliknięcia przycisku "Serce" (ulubione)
+    document.getElementById('heartButton').addEventListener('click', function () {
+        var heartImage = document.getElementById('heartImage');
+        var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
+        var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
+        addFavoriteAnimal(dog.number);
+        if (isLiked) {
+            heartImage.src = getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png';
+            localStorage.setItem('heart-' + dog.number, 'false');
+            favouriteAnimals = favouriteAnimals.filter(function (animal) {
+                return animal !== dog.number;
             });
-
-            galleryContainer.appendChild(dogCard);
-        });
-
-        // Zamknij modal po kliknięciu przycisku zamknięcia
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        // Zamknij modal po kliknięciu poza nim
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
+        } else {
+            heartImage.src = '/serce1.png';
+            localStorage.setItem('heart-' + dog.number, 'true');
+            if (!favouriteAnimals.includes(dog.number)) {
+                favouriteAnimals.push(dog.number);
             }
-        });
-    }
+        }
+
+        localStorage.setItem('favouriteAnimals', JSON.stringify(favouriteAnimals));
+    });
+});
+
+    // Zamknij modal po kliknięciu przycisku zamknięcia
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Zamknij modal po kliknięciu poza nim
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 });
 
 function setCookie(name, value, days) {
@@ -274,21 +268,12 @@ function getCookie(name) {
     const ca = decodedCookie.split(';');
     for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
-        while (c.charAt(0) === ' ') {
+        while (c.charAt(0) == ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(cname) === 0) {
+        if (c.indexOf(cname) == 0) {
             return c.substring(cname.length, c.length);
         }
     }
     return "";
-}
-
-function updateCartIcon() {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const cartImage = document.getElementById('cart-image');
-
-    if (cartItems.length > 0) {
-        cartImage.setAttribute('data-count', cartItems.length); // Dodaj liczbę przedmi
-    }
 }
