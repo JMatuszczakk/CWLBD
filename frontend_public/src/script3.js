@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const settingsButton = document.getElementById('settings-image');
     const settingsPopup = document.getElementById('settings-popup');
-
+    //d
     settingsButton.addEventListener('click', function () {
         if (settingsPopup.style.display === 'none' || settingsPopup.style.display === '') {
             settingsPopup.style.display = 'block';
