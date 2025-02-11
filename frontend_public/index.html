@@ -506,6 +506,8 @@
                         // Apply dark mode if the cookie is set
                         if (getCookie('darkMode') === 'true') {
                             applyDarkMode();
+                        } else {
+                            applyLightMode();
                         }
                     })
                     .catch(error => {
@@ -914,7 +916,7 @@
                 }
             });
         });
-        window.onscroll = function () { scrollFunction() };
+        // window.onscroll = function () { scrollFunction() };
         // document.getElementById("navbar").style.top = "0"
     </script>
 </body>
