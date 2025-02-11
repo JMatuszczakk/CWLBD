@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CWLB</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <link rel="stylesheet" href="src/style.css">
 </head>
 
@@ -15,12 +15,13 @@
     <div id="top-bar" class="fixed top-0 left-0 w-full text-white p-4 z-50 flex items-center justify-between"
         style="transition: top 0.3s;">
         <!-- Left side: back arrow + title -->
+
         <div class="flex items-center space-x-4 bg-[#bad3f5] rounded-lg p-2" id="left-side-navbar">
             <button>
                 <img src="/strzalka_back.png" alt="strzalka_back" class="w-8 h-auto" id="arrow-image">
             </button>
         </div>
-
+        <script src="src/script2.js"></script>
         <!-- Right side: user's existing icons/buttons -->
         <div class="flex items-center space-x-4 ml-auto bg-[#bad3f5] rounded-lg p-2" id="right-side-navbar">
             <button>
@@ -43,7 +44,7 @@
             <img src="/logo.png" alt="CWLB Logo" class="mx-auto w-80 h-auto">
         </div>
         <h1 class="text-7xl font-bold text-center mb-8 text-blue-900" id="title">Zwierzęta</h1>
-        <p class="text-center text-gray-600">
+        <p class="text-center text-gray-600 ">
             Poniżej znajdziesz listę zwierząt, które czekają na nowych właścicieli. Kliknij na zdjęcie, aby zobaczyć
             więcej szczegółów.
         </p>
@@ -56,8 +57,8 @@
                     placeholder="Wpisz tekst...">
             </div>
         </div>
-
-        <div id="dogs-gallery" class="grid grid-cols-4 gap-4 rounded-lg">
+        <script src="src/script1.js"></script>
+        <div id="dogs-gallery" class="grid grid-cols-4 gap-4 rounded-lg ">
             <!-- Karty psów będą dodawane tutaj -->
         </div>
     </div>
@@ -100,10 +101,79 @@
         <p>Settings options go here</p>
     </div>
 
-    <script src="src/script1.js"></script>
-    <script src="src/script2.js"></script>
     <script src="src/script3.js"></script>
+    <script>
+        let prevScrollpos = window.pageYOffset;
+        window.onscroll = () => {
+            const currentScrollPos = window.pageYOffset;
+            const bar = document.getElementById("top-bar");
+            if (prevScrollpos > currentScrollPos) {
+                bar.style.top = "0";
+            } else {
+                bar.style.top = "-80px";
+            }
+            prevScrollpos = currentScrollPos;
+        };
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const settingsButton = document.getElementById('settings-image');
+            const settingsPopup = document.getElementById('settings-popup');
 
+            settingsButton.addEventListener('click', function () {
+                if (settingsPopup.style.display === 'none' || settingsPopup.style.display === '') {
+                    settingsPopup.style.display = 'block';
+                } else {
+                    settingsPopup.style.display = 'none';
+                }
+            });
+
+            // Close the popup when clicking outside of it
+            window.addEventListener('click', function (event) {
+                if (event.target !== settingsButton && !settingsPopup.contains(event.target)) {
+                    settingsPopup.style.display = 'none';
+                }
+            });
+
+            const favoriteIcon = document.getElementById('favorite-icon');
+            const favoriteAnimalsModal = document.getElementById('favorite-animals-modal');
+            const closeBtns = document.querySelectorAll('.close-btn');
+            const favoriteAnimalsList = document.getElementById('favorite-animals-list');
+
+            favoriteIcon.addEventListener('click', function () {
+                const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
+
+                favoriteAnimalsList.innerHTML = '';
+
+                if (favoriteAnimals.length === 0) {
+                    favoriteAnimalsList.innerHTML = '<p>Brak ulubionych zwierząt.</p>';
+                } else {
+                    favoriteAnimals.forEach(animal => {
+                        const animalItem = document.createElement('div');
+                        animalItem.textContent = animal;
+                        favoriteAnimalsList.appendChild(animalItem);
+                    });
+                }
+
+                favoriteAnimalsModal.style.display = 'block';
+            });
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    favoriteAnimalsModal.style.display = 'none';
+                    settingsPopup.style.display = 'none';
+                });
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target === favoriteAnimalsModal) {
+                    favoriteAnimalsModal.style.display = 'none';
+                }
+            });
+        });
+        // window.onscroll = function () { scrollFunction() };
+        // document.getElementById("navbar").style.top = "0"
+    </script>
 </body>
 
 </html>
