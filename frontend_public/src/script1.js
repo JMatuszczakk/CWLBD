@@ -267,8 +267,6 @@ function getCookie(name) {
     }
     return "";
 }
-<<<<<<< Updated upstream
-=======
 //curl -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": "admin"}' http://localhost:5010/api/users/login
 // {
 //     "message": "Zalogowano pomy\u015blnie!",
@@ -323,4 +321,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
->>>>>>> Stashed changes
