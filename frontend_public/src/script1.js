@@ -1,3 +1,4 @@
+// frontend_public/src/script1.js
 
 document.addEventListener('DOMContentLoaded', function () {
     const toggleImage = document.getElementById('toggle-image');
@@ -21,6 +22,44 @@ document.addEventListener('DOMContentLoaded', function () {
     const loginModalContent = document.querySelector('#login-modal .modal-content');
     const loginModal_username = document.getElementById('login-username');
     const loginModal_password = document.getElementById('login-password');
+
+    // --- Helper Functions ---
+    function setCookie(name, value, days) {
+        const d = new Date();
+        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + d.toUTCString();
+        document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+    }
+
+    function getCookie(name) {
+        const cname = name + "=";
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(cname) == 0) {
+                return decodeURIComponent(c.substring(cname.length, c.length));
+            }
+        }
+        return "";
+    }
+
+    function setDarkMode(isDarkMode) {
+        if (isDarkMode) {
+            applyDarkMode();
+            setCookie('darkMode', 'true', 7); // Use setCookie
+        } else {
+            applyLightMode();
+            setCookie('darkMode', 'false', 7); // Use setCookie
+        }
+    }
+
+    function isDarkMode() {
+        return getCookie('darkMode') === 'true'; // Use getCookie
+    }
 
     function applyDarkMode() {
         const dogInfoElements = document.querySelectorAll('.dog-info');
@@ -55,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         loginModalContent.style.color = '#ECB365';
         loginModal_username.style.backgroundColor = '#333';
         loginModal_password.style.backgroundColor = '#333';
+        updateHeartIcons(); // Update heart icons when mode changes
     }
 
     function applyLightMode() {
@@ -91,18 +131,25 @@ document.addEventListener('DOMContentLoaded', function () {
         loginModalContent.style.color = 'black';
         loginModal_username.style.backgroundColor = '#bad3f5';
         loginModal_password.style.backgroundColor = '#bad3f5';
+        updateHeartIcons(); // Update heart icons when mode changes
+
     }
 
-    toggleImage.addEventListener('click', function () {
-        if (toggleImage.src.includes('zmiana_b.png')) {
-            applyDarkMode();
-            setCookie('darkMode', 'true', 7);
-        } else {
-            applyLightMode();
-            setCookie('darkMode', 'false', 7);
-        }
-    });
+    function updateHeartIcons() {
+        dogsData.forEach(dog => {
+            const heartImage = document.getElementById(`heartImage-${dog.id}`);
+            if (heartImage) {
+                const favoriteAnimals = getFavoriteAnimals();
+                const isLiked = favoriteAnimals.includes(dog.id);
+                heartImage.src = isLiked ? '/serce1.png' : (isDarkMode() ? '/serce2_c.png' : '/serce2_b.png');
+            }
+        });
+    }
 
+
+    toggleImage.addEventListener('click', function () {
+        setDarkMode(!isDarkMode());
+    });
 
     const galleryContainer = document.getElementById('dogs-gallery');
     const modal = document.getElementById('dog-modal');
@@ -112,13 +159,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const acceptCookiesBtn = document.getElementById('accept-cookies');
     const rejectCookiesBtn = document.getElementById('reject-cookies');
 
-    // Check for cookie consent
-    if (!localStorage.getItem('cookieConsent')) {
+    // Check for cookie consent (using cookies, not localStorage)
+    if (!getCookie('cookieConsent')) {
         cookieConsentModal.style.display = 'block';
     }
 
     acceptCookiesBtn.addEventListener('click', () => {
-        localStorage.setItem('cookieConsent', 'accepted');
+        setCookie('cookieConsent', 'accepted', 365); // Longer duration
         cookieConsentModal.style.display = 'none';
     });
 
@@ -128,26 +175,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let dogsData = [];
 
-    fetch('https://api.cwlbelchatow.nl/api/dogs')
-        .then(response => response.json())
-        .then(dogs => {
-            dogsData = dogs;
-            displayDogs(dogs);
-            // Apply dark mode if the cookie is set
-            if (getCookie('darkMode') === 'true') {
-                applyDarkMode();
-            } else {
-                applyLightMode();
-            }
-        })
-        .catch(error => {
-            console.error('Błąd podczas wczytywania psów:', error);
-            galleryContainer.innerHTML = `
-                            <div class="col-span-full text-center text-red-600">
-                                Nie udało się wczytać psów. Prosimy spróbować ponownie później.
-                            </div>
-                        `;
-        });
+    function fetchAndDisplayDogs() {
+        fetch('https://api.cwlbelchatow.nl/api/dogs')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(dogs => {
+                dogsData = dogs;
+                displayDogs(dogs);
+                if (isDarkMode()) {
+                    applyDarkMode();
+                } else {
+                    applyLightMode();
+                }
+            })
+            .catch(error => {
+                console.error('Błąd podczas wczytywania psów:', error);
+                galleryContainer.innerHTML = `
+                                <div class="col-span-full text-center text-red-600">
+                                    Nie udało się wczytać psów. Prosimy spróbować ponownie później.
+                                </div>
+                            `;
+            });
+    }
+
+
+    function getFavoriteAnimals() {
+        const cookieValue = getCookie('favoriteAnimals');
+        if (!cookieValue) {
+            return [];
+        }
+        try {
+            return JSON.parse(cookieValue);
+        } catch (error) {
+            console.error("Error parsing favoriteAnimals cookie:", error);
+            return []; // Return an empty array on error
+        }
+    }
+
+
+    function setFavoriteAnimals(animals) {
+        setCookie('favoriteAnimals', JSON.stringify(animals), 365);
+    }
 
     function displayDogs(dogs) {
         galleryContainer.innerHTML = '';
@@ -155,64 +227,55 @@ document.addEventListener('DOMContentLoaded', function () {
             const dogCard = document.createElement('div');
             dogCard.className = 'rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
             dogCard.innerHTML = `
-                            <div class="p-0">
-                                <img 
-                                    src="${dog.photo}" 
-                                    alt="${dog.name}" 
-                                    class="w-full h-64 object-cover rounded-t"
-                                />
-                            </div>
-                            <div class="p-4 dog-info rounded-b" style="background-color: ${getCookie('darkMode') === 'true' ? '#064663' : '#ffffff'};}">
-                                <h2 class="text-xl font-bold">${dog.name}</h2>
-                                <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
-                            </div>
-                        `;
+                <div class="p-0">
+                    <img src="${dog.photo}" alt="${dog.name}" class="w-full h-64 object-cover rounded-t"/>
+                </div>
+                <div class="p-4 dog-info rounded-b" style="background-color: ${isDarkMode() ? '#064663' : '#ffffff'};}">
+                    <h2 class="text-xl font-bold">${dog.name}</h2>
+                    <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
+                </div>
+            `;
 
-            // Dodaj event kliknięcia, aby pokazać szczegóły psa
             dogCard.addEventListener('click', () => {
+                const favoriteAnimals = getFavoriteAnimals();
+                const isLiked = favoriteAnimals.includes(dog.id);
+
                 modalDetails.innerHTML = `
-                                <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
-                                <img 
-                                    src="${dog.photo}" 
-                                    alt="${dog.name}" 
-                                    class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"
-                                />
-                                <div class="space-y-2 relative">
-                                    <p><strong>Rasa:</strong> ${dog.race}</p>
-                                    <p><strong>Kolor:</strong> ${dog.color}</p>
-                                    <p><strong>Numer ID:</strong> ${dog.number}</p>
-                                    <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
-                                    <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
-                                    <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
-                                    </button>
-                                </div>
-                            `;
+                    <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
+                    <img src="${dog.photo}" alt="${dog.name}" class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"/>
+                    <div class="space-y-2 relative">
+                        <p><strong>Rasa:</strong> ${dog.race}</p>
+                        <p><strong>Kolor:</strong> ${dog.color}</p>
+                        <p><strong>Numer ID:</strong> ${dog.number}</p>
+                        <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
+                        <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
+                        <button id="heartButton-${dog.id}" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
+                            <img id="heartImage-${dog.id}" src="${isLiked ? '/serce1.png' : (isDarkMode() ? '/serce2_c.png' : '/serce2_b.png')}" alt="Serce" class="w-8 h-auto">
+                        </button>
+                    </div>
+                `;
                 modal.style.display = 'block';
-                // Zapisz stan polubienia psa w localStorage
-                document.getElementById('heartButton').addEventListener('click', function () {
-                    var heartImage = document.getElementById('heartImage');
-                    var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
-                    var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
-                    addFavoriteAnimal(dog.number);
+
+                // Heart button event listener (inside the dogCard click handler)
+                document.getElementById(`heartButton-${dog.id}`).addEventListener('click', function () {
+                    const heartImage = document.getElementById(`heartImage-${dog.id}`);
+                    let favoriteAnimals = getFavoriteAnimals();
+                    const isLiked = favoriteAnimals.includes(dog.id);
+
                     if (isLiked) {
-                        heartImage.src = getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png';
-                        localStorage.setItem('heart-' + dog.number, 'false');
-                        favouriteAnimals = favouriteAnimals.filter(function (animal) {
-                            return animal !== dog.number;
-                        });
+                        heartImage.src = isDarkMode() ? '/serce2_c.png' : '/serce2_b.png';
+                        favoriteAnimals = favoriteAnimals.filter(id => id !== dog.id);
                     } else {
                         heartImage.src = '/serce1.png';
-                        localStorage.setItem('heart-' + dog.number, 'true');
-                        if (!favouriteAnimals.includes(dog.number)) {
-                            favouriteAnimals.push(dog.number);
+                        if (!favoriteAnimals.includes(dog.id)) {
+                            favoriteAnimals.push(dog.id);  // Store the ID
                         }
                     }
+                    setFavoriteAnimals(favoriteAnimals);
 
-                    localStorage.setItem('favouriteAnimals', JSON.stringify(favouriteAnimals));
                 });
-            });
 
+            });
             galleryContainer.appendChild(dogCard);
         });
     }
@@ -225,53 +288,32 @@ document.addEventListener('DOMContentLoaded', function () {
             dog.color.toLowerCase().includes(filterText)
         );
         displayDogs(filteredDogs);
-        // apply dark mode if the cookie is set
-        if (getCookie('darkMode') === 'true') {
+        if (isDarkMode()) {
             applyDarkMode();
         }
-
     });
 
-    // Zamknij modal po kliknięciu przycisku zamknięcia
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
     });
 
-    // Zamknij modal po kliknięciu poza nim
     window.addEventListener('click', (event) => {
         if (event.target === modal) {
             modal.style.display = 'none';
         }
     });
+
+    // --- Initial Load ---
+    fetchAndDisplayDogs();  // Load and display dogs on page load
+    if (isDarkMode()) {
+        applyDarkMode();
+    } else {
+        applyLightMode();
+    }
 });
 
-function setCookie(name, value, days) {
-    const d = new Date();
-    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + d.toUTCString();
-    document.cookie = name + "=" + value + ";" + expires + ";path=/";
-}
 
-function getCookie(name) {
-    const cname = name + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const ca = decodedCookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(cname) == 0) {
-            return c.substring(cname.length, c.length);
-        }
-    }
-    return "";
-}
-//curl -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": "admin"}' http://localhost:5010/api/users/login
-// {
-//     "message": "Zalogowano pomy\u015blnie!",
-//     "session_key": "33637703-2b87-4d13-ab44-4829961dad75"
-//   }
+//Login
 document.addEventListener('DOMContentLoaded', function () {
 
     async function getSession(username, password) {
@@ -285,13 +327,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const data = await response.json();
-            //if (data.message) contains "Niepoprawne dane logowania!" 
+
             if (data.message === "Niepoprawne dane logowania!") {
                 console.error('Błąd podczas logowania:', data.message);
                 return "error";
             }
             console.log('Zalogowano pomyślnie:', data);
-            localStorage.setItem('sessionKey', data.session_key);
+
+            setCookie('sessionKey', data.session_key, 7);
+
             return "success";
         } catch (error) {
             console.error('Błąd podczas logowania:', error);
