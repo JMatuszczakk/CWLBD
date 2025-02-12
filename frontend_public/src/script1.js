@@ -285,13 +285,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const data = await response.json();
-            //if (data.message) contains "Niepoprawne dane logowania!" 
+
             if (data.message === "Niepoprawne dane logowania!") {
                 console.error('Błąd podczas logowania:', data.message);
                 return "error";
             }
             console.log('Zalogowano pomyślnie:', data);
-            localStorage.setItem('sessionKey', data.session_key);
+
+            setCookie('sessionKey', data.session_key, 7);
+
             return "success";
         } catch (error) {
             console.error('Błąd podczas logowania:', error);
@@ -323,3 +325,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
