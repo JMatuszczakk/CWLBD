@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const favoriteAnimalsList = document.getElementById('favorite-animals-list');
 
     favoriteIcon.addEventListener('click', function () {
-        const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
+        const favoriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
 
         favoriteAnimalsList.innerHTML = '';
 
