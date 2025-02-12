@@ -1,20 +1,16 @@
-// frontend_public/src/script3.js
 document.addEventListener('DOMContentLoaded', function () {
     const settingsButton = document.getElementById('settings-image');
     const settingsPopup = document.getElementById('settings-popup');
-    const favoriteIcon = document.getElementById('favorite-icon');
-    const favoriteAnimalsModal = document.getElementById('favorite-animals-modal');
-    const favoriteAnimalsList = document.getElementById('favorite-animals-list');
-    const loginButton = document.getElementById('login-image');  //for login
-    const loginModal = document.getElementById('login-modal');
-    const closeBtn = loginModal.querySelector('.close-btn');
-
-
+    //d
     settingsButton.addEventListener('click', function () {
-        settingsPopup.style.display = (settingsPopup.style.display === 'none' || settingsPopup.style.display === '') ? 'block' : 'none';
+        if (settingsPopup.style.display === 'none' || settingsPopup.style.display === '') {
+            settingsPopup.style.display = 'block';
+        } else {
+            settingsPopup.style.display = 'none';
+        }
     });
 
-    // Close the popup when clicking outside
+    // Close the popup when clicking outside of it
     window.addEventListener('click', function (event) {
         if (event.target !== settingsButton && !settingsPopup.contains(event.target)) {
             settingsPopup.style.display = 'none';
@@ -49,53 +45,43 @@ document.addEventListener('DOMContentLoaded', function () {
     const favoriteAnimalsList = document.getElementById('favorite-animals-list');
 
     favoriteIcon.addEventListener('click', function () {
-        const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
+        const favoriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
 
         favoriteAnimalsList.innerHTML = '';
 
         if (favoriteAnimals.length === 0) {
             favoriteAnimalsList.innerHTML = '<p>Brak ulubionych zwierząt.</p>';
-            favoriteAnimalsModal.style.display = 'block'; // Show even if empty
-            return;
+        } else {
+            favoriteAnimals.forEach(animal => {
+                const animalItem = document.createElement('div');
+                animalItem.textContent = animal;
+                favoriteAnimalsList.appendChild(animalItem);
+            });
         }
 
-
-        // Fetch details for each favorite animal.  Use Promise.all for parallel fetching.
-        Promise.all(favoriteAnimals.map(dogId =>
-            fetch(`https://api.cwlbelchatow.nl/api/dogs`).then(response => response.json()).then(dogs => {
-                const dog = dogs.find(d => d.id === dogId);
-                return dog
-            })
-        ))
-            .then(dogs => {
-                dogs.forEach(dog => {
-                    if (!dog) return; // Skip if dog data not found.
-
-                    const animalItem = document.createElement('div');
-                    animalItem.className = 'favorite-animal-item flex items-center p-2 border-b last:border-none'; // Added some basic styling
-                    animalItem.innerHTML = `
-                        <img src="${dog.photo}" alt="${dog.name}" class="w-16 h-16 object-cover rounded mr-4">
-                        <div>
-                            <h3 class="text-lg font-bold">${dog.name}</h3>
-                            <p>${dog.race} | ${dog.color}</p>
-                        </div>
-                    `;
-                    favoriteAnimalsList.appendChild(animalItem);
-                });
-                favoriteAnimalsModal.style.display = 'block';  // Show the modal *after* populating it
-            })
-            .catch(error => {
-                console.error("Error fetching favorite animals:", error);
-                favoriteAnimalsList.innerHTML = "<p>Error loading favorite animals.</p>";
-                favoriteAnimalsModal.style.display = 'block'; //show modal
-
-            });
-
+        favoriteAnimalsModal.style.display = 'block';
     });
 
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            favoriteAnimalsModal.style.display = 'none';
+            settingsPopup.style.display = 'none';
+        });
+    });
 
+    window.addEventListener('click', function (event) {
+        if (event.target === favoriteAnimalsModal) {
+            favoriteAnimalsModal.style.display = 'none';
+        }
+    });
+});
+window.onscroll = function () { scrollFunction() };
 
-    // --- Login Modal ---
+document.addEventListener('DOMContentLoaded', function () {
+    const loginButton = document.getElementById('login-image');
+    const loginModal = document.getElementById('login-modal');
+    const closeBtn = loginModal.querySelector('.close-btn');
+
     loginButton.addEventListener('click', function () {
         loginModal.style.display = 'block';
     });
@@ -110,38 +96,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-function getFavoriteAnimals() {
-    const cookieValue = getCookie('favoriteAnimals');
-    if (!cookieValue) {
-        return [];
-    }
-    try {
-        return JSON.parse(cookieValue);
-    } catch (error) {
-        console.error("Error parsing favoriteAnimals cookie:", error);
-        return [];  // Return empty array on parse error
-    }
-}
-
-function setCookie(name, value, days) {
-    const d = new Date();
-    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + d.toUTCString();
-    document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";  // Encode the value
-}
-
-function getCookie(name) {
-    const cname = name + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const ca = decodedCookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(cname) == 0) {
-            return decodeURIComponent(c.substring(cname.length, c.length)); // Decode the value
-        }
-    }
-    return "";
-}
