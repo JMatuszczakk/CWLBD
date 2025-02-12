@@ -273,6 +273,7 @@ function getCookie(name) {
 //     "session_key": "33637703-2b87-4d13-ab44-4829961dad75"
 //   }
 document.addEventListener('DOMContentLoaded', function () {
+
     async function getSession(username, password) {
         try {
             const response = await fetch('https://api.cwlbelchatow.nl/api/users/login', {
@@ -284,12 +285,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const data = await response.json();
+
             if (data.message === "Niepoprawne dane logowania!") {
                 console.error('Błąd podczas logowania:', data.message);
                 return "error";
             }
             console.log('Zalogowano pomyślnie:', data);
+
             setCookie('sessionKey', data.session_key, 7);
+
             return "success";
         } catch (error) {
             console.error('Błąd podczas logowania:', error);
@@ -321,3 +325,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
