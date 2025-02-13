@@ -49,10 +49,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const isDarkMode = getCookie('darkMode') === 'true'; // Check dark mode
 
             // --- Conditionally Apply Classes based on isDarkMode ---
-            const bgColor = isDarkMode ? 'bg-gray-800' : 'bg-white';
-            const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
+            const bgColor = isDarkMode ? 'bg-[#333]' : 'bg-[#bad3f5]';
+            const textColor = isDarkMode ? 'text-[#ECB365]' : 'text-black';
             const borderColor = isDarkMode ? 'border-gray-700' : 'border-gray-200';
-            const secondaryTextColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+            const secondaryTextColor = isDarkMode ? 'text-[#a7732a]' : 'text-gray-600';
 
             const removedBgColor = isDarkMode ? 'bg-gray-700' : 'bg-gray-100';
             const removedBorderColor = isDarkMode ? 'border-gray-600' : 'border-gray-200';
