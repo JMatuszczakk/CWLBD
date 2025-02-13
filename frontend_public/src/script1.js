@@ -2,6 +2,56 @@
 
 let dogsData = []; // Global variable to store dog data
 
+// --- Cookie and Favorite Helper Functions (Moved from script3.js) ---
+
+function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+function getCookie(name) {
+    const cname = name + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(cname) == 0) {
+            return c.substring(cname.length, c.length);
+        }
+    }
+    return "";
+}
+
+function addFavorite(dogId) {
+    let favorites = getCookie("favorites");
+    let favoritesArray = favorites ? favorites.split(',') : [];
+    if (!favoritesArray.includes(String(dogId))) {
+        favoritesArray.push(String(dogId));
+        setCookie("favorites", favoritesArray.join(','), 7);
+    }
+}
+
+function removeFavorite(dogId) {
+    let favorites = getCookie("favorites");
+    let favoritesArray = favorites ? favorites.split(',') : [];
+    favoritesArray = favoritesArray.filter(id => id !== String(dogId));
+    setCookie("favorites", favoritesArray.join(','), 7);
+}
+
+function isFavorite(dogId) {
+    let favorites = getCookie("favorites");
+    let favoritesArray = favorites ? favorites.split(',') : [];
+    return favoritesArray.includes(String(dogId));
+}
+
+// --- End of Moved Functions ---
+
+
 document.addEventListener('DOMContentLoaded', function () {
     const toggleImage = document.getElementById('toggle-image');
     const cartImage = document.getElementById('cart-image');
@@ -233,30 +283,6 @@ document.addEventListener('DOMContentLoaded', function () {
             modal.style.display = 'none';
         }
     });
-
-
-    function setCookie(name, value, days) {
-        const d = new Date();
-        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-        const expires = "expires=" + d.toUTCString();
-        document.cookie = name + "=" + value + ";" + expires + ";path=/";
-    }
-
-    function getCookie(name) {
-        const cname = name + "=";
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const ca = decodedCookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(cname) == 0) {
-                return c.substring(cname.length, c.length);
-            }
-        }
-        return "";
-    }
     async function getSession(username, password) {
         try {
             const response = await fetch('https://api.cwlbelchatow.nl/api/users/login', {
