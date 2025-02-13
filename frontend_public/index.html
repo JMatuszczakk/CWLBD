@@ -5,6 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CWLB</title>
+    <!--  NO STATIC <base> TAG HERE -->
+    <script>
+        // Dynamically set the <base> tag for GitHub Pages
+        if (window.location.href.includes("github.io")) {
+            const base = document.createElement('base');
+            // Extract repository name from the URL.  Handles cases with and without trailing slashes.
+            const pathParts = window.location.pathname.split('/').filter(part => part.length > 0);
+            const repoName = pathParts[0] || ''; // First part is usually the repo name
+            base.href = "/" + repoName + "/";
+
+            document.head.appendChild(base);
+            console.log("Detected GitHub Pages.  Base URL set to:", base.href);
+        } else {
+            console.log("Running locally.  No <base> tag needed.");
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="src/style.css">
@@ -66,7 +82,7 @@
     <!-- Modal ze szczegółami psa -->
     <div id="dog-modal" class="modal">
         <div class="modal-content bg-white rounded-lg shadow-xl p-6" id="dog-modal-details">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn">×</span>
             <div id="dog-details">
                 <!-- Szczegóły psa zostaną dynamicznie wstawione tutaj -->
             </div>
@@ -87,7 +103,7 @@
     <!-- Login Modal -->
     <div id="login-modal" class="modal">
         <div class="modal-content bg-white rounded-lg shadow-xl p-6">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn">×</span>
             <h2 class="text-2xl font-bold mb-4">Logowanie</h2>
             <input type="text" id="login-username" placeholder="email" class="mb-4 p-2 border rounded-lg w-full">
             <input type="password" id="login-password" placeholder="hasło" class="mb-4 p-2 border rounded-lg w-full">
@@ -100,7 +116,7 @@
     <!-- Favorite Animals Modal -->
     <div id="favorite-animals-modal" class="modal">
         <div class="modal-content bg-white rounded-lg shadow-xl p-6" id="ulu-zwie">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn">×</span>
             <h1 class="text-2xl font-bold mb-4 text-black" id="ulu-zwie-tekst"> Ulubione Zwierzęta </h1>
             <div id="favorite-animals-list">
                 <!-- Lista ulubionych zwierząt zostanie dynamicznie wstawiona tutaj -->
@@ -119,20 +135,7 @@
     </div>
 
     <script src="src/script3.js"></script>
-    <script>
-        let prevScrollpos = window.pageYOffset;
-        window.onscroll = () => {
-            const currentScrollPos = window.pageYOffset;
-            const bar = document.getElementById("top-bar");
-            if (prevScrollpos > currentScrollPos) {
-                bar.style.top = "0";
-            } else {
-                bar.style.top = "-80px";
-            }
-            prevScrollpos = currentScrollPos;
-        };
-    </script>
-    <script src="src/script2.js"></script>
+
 </body>
 
 </html>
