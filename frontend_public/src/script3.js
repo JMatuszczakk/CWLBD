@@ -46,17 +46,29 @@ document.addEventListener('DOMContentLoaded', function () {
         // Check if each favorite still exists and display accordingly
         favoritesArray.forEach(dogId => {
             const dog = dogsData.find(d => String(d.id) === dogId);
+            const isDarkMode = getCookie('darkMode') === 'true'; // Check dark mode
+
+            // --- Conditionally Apply Classes based on isDarkMode ---
+            const bgColor = isDarkMode ? 'bg-gray-800' : 'bg-white';
+            const textColor = isDarkMode ? 'text-white' : 'text-gray-900';
+            const borderColor = isDarkMode ? 'border-gray-700' : 'border-gray-200';
+            const secondaryTextColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+
+            const removedBgColor = isDarkMode ? 'bg-gray-700' : 'bg-gray-100';
+            const removedBorderColor = isDarkMode ? 'border-gray-600' : 'border-gray-200';
+            const removedTextColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+
 
             if (dog) {
                 // Dog exists, display the dog card
                 const dogItem = document.createElement('div');
-                dogItem.classList.add('flex', 'items-center', 'mb-4', 'p-4', 'border', 'border-gray-200', 'rounded-lg', 'shadow', 'bg-white', 'dark:bg-gray-800', 'dark:border-gray-700');
+                dogItem.classList.add('flex', 'items-center', 'mb-4', 'p-4', 'border', 'rounded-lg', 'shadow', bgColor, borderColor);
 
                 dogItem.innerHTML = `
                     <img src="${dog.photo}" alt="${dog.name}" class="w-16 h-16 object-cover rounded-md mr-4">
                     <div class="flex-grow">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">${dog.name}</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">${dog.race} | ${dog.color}</p>
+                        <h3 class="text-lg font-bold ${textColor}">${dog.name}</h3>
+                        <p class="text-sm ${secondaryTextColor}">${dog.race} | ${dog.color}</p>
                     </div>
                     <button class="remove-favorite-btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-dog-id="${dog.id}">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -68,10 +80,11 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 // Dog no longer exists, display a message
                 const removedItem = document.createElement('div');
-                removedItem.classList.add('flex', 'items-center', 'mb-4', 'p-4', 'border', 'border-gray-200', 'rounded-lg', 'shadow', 'bg-gray-100', 'dark:bg-gray-700', 'dark:border-gray-600');
+                removedItem.classList.add('flex', 'items-center', 'mb-4', 'p-4', 'border', 'rounded-lg', 'shadow', removedBgColor, removedBorderColor);
+
                 removedItem.innerHTML = `
                     <div class="flex-grow">
-                        <p class="text-sm text-gray-600 dark:text-gray-400">To zwierzę zostało usunięte.</p>
+                        <p class="text-sm ${removedTextColor}">To zwierzę zostało usunięte.</p>
                     </div>
                     <button class="remove-favorite-btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-dog-id="${dogId}">
                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
