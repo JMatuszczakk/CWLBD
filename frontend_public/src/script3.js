@@ -28,53 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // --- Cookie Helper Functions ---
-
-    function setCookie(name, value, days) {
-        const d = new Date();
-        d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-        const expires = "expires=" + d.toUTCString();
-        document.cookie = name + "=" + value + ";" + expires + ";path=/";
-    }
-
-    function getCookie(name) {
-        const cname = name + "=";
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const ca = decodedCookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(cname) == 0) {
-                return c.substring(cname.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    function addFavorite(dogId) {
-        let favorites = getCookie("favorites");
-        let favoritesArray = favorites ? favorites.split(',') : [];
-        if (!favoritesArray.includes(String(dogId))) {
-            favoritesArray.push(String(dogId));
-            setCookie("favorites", favoritesArray.join(','), 7);
-        }
-    }
-
-    function removeFavorite(dogId) {
-        let favorites = getCookie("favorites");
-        let favoritesArray = favorites ? favorites.split(',') : [];
-        favoritesArray = favoritesArray.filter(id => id !== String(dogId));
-        setCookie("favorites", favoritesArray.join(','), 7);
-    }
-
-    function isFavorite(dogId) {
-        let favorites = getCookie("favorites");
-        let favoritesArray = favorites ? favorites.split(',') : [];
-        return favoritesArray.includes(String(dogId));
-    }
-
     // --- Favorites Modal Logic ---
 
     async function showFavoriteAnimals() {
@@ -112,9 +65,9 @@ document.addEventListener('DOMContentLoaded', function () {
         removeButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const dogId = this.dataset.dogId;
-                removeFavorite(dogId);
+                removeFavorite(dogId); // Uses functions now in script1.js
                 showFavoriteAnimals();
-                updateHeartIconsInList();
+                updateHeartIconsInList(); // Uses function now in script1.js
             });
         });
 
@@ -166,4 +119,5 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
 });
