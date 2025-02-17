@@ -1,3 +1,56 @@
+// frontend_public/src/script1.js
+
+let dogsData = []; // Global variable to store dog data
+
+// --- Cookie and Favorite Helper Functions (Moved from script3.js) ---
+
+function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+function getCookie(name) {
+    const cname = name + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(cname) == 0) {
+            return c.substring(cname.length, c.length);
+        }
+    }
+    return "";
+}
+
+function addFavorite(dogId) {
+    let favorites = getCookie("favorites");
+    let favoritesArray = favorites ? favorites.split(',') : [];
+    if (!favoritesArray.includes(String(dogId))) {
+        favoritesArray.push(String(dogId));
+        setCookie("favorites", favoritesArray.join(','), 7);
+    }
+}
+
+function removeFavorite(dogId) {
+    let favorites = getCookie("favorites");
+    let favoritesArray = favorites ? favorites.split(',') : [];
+    favoritesArray = favoritesArray.filter(id => id !== String(dogId));
+    setCookie("favorites", favoritesArray.join(','), 7);
+}
+
+function isFavorite(dogId) {
+    let favorites = getCookie("favorites");
+    let favoritesArray = favorites ? favorites.split(',') : [];
+    return favoritesArray.includes(String(dogId));
+}
+
+// --- End of Moved Functions ---
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const toggleImage = document.getElementById('toggle-image');
@@ -126,39 +179,40 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = 'https://www.google.com';
     });
 
-    let dogsData = [];
-
+    // --- Fetch Dogs ONCE ---
     fetch('https://api.cwlbelchatow.nl/api/dogs')
         .then(response => response.json())
         .then(dogs => {
-            dogsData = dogs;
-            displayDogs(dogs);
+            dogsData = dogs; // Store the fetched data
+            displayDogs(dogsData);
             // Apply dark mode if the cookie is set
             if (getCookie('darkMode') === 'true') {
                 applyDarkMode();
             } else {
                 applyLightMode();
             }
+            updateHeartIconsInList();
         })
         .catch(error => {
             console.error('Błąd podczas wczytywania psów:', error);
             galleryContainer.innerHTML = `
-                            <div class="col-span-full text-center text-red-600">
-                                Nie udało się wczytać psów. Prosimy spróbować ponownie później.
-                            </div>
-                        `;
+                         <div class="col-span-full text-center text-red-600">
+                             Nie udało się wczytać psów. Prosimy spróbować ponownie później.
+                         </div>
+                     `;
         });
 
     function displayDogs(dogs) {
+        // ... your existing displayDogs function ...
         galleryContainer.innerHTML = '';
         dogs.forEach(dog => {
             const dogCard = document.createElement('div');
             dogCard.className = 'rounded-lg shadow-md hover:shadow-xl transition-shadow cursor-pointer dog-card';
             dogCard.innerHTML = `
                             <div class="p-0">
-                                <img 
-                                    src="${dog.photo}" 
-                                    alt="${dog.name}" 
+                                <img
+                                    src="${dog.photo}"
+                                    alt="${dog.name}"
                                     class="w-full h-64 object-cover rounded-t"
                                 />
                             </div>
@@ -167,52 +221,37 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <p class="text-gray-600 dog-info-text">${dog.race} | ${dog.color}</p>
                             </div>
                         `;
-
-            // Dodaj event kliknięcia, aby pokazać szczegóły psa
             dogCard.addEventListener('click', () => {
                 modalDetails.innerHTML = `
-                                <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
-                                <img 
-                                    src="${dog.photo}" 
-                                    alt="${dog.name}" 
-                                    class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"
-                                />
-                                <div class="space-y-2 relative">
-                                    <p><strong>Rasa:</strong> ${dog.race}</p>
-                                    <p><strong>Kolor:</strong> ${dog.color}</p>
-                                    <p><strong>Numer ID:</strong> ${dog.number}</p>
-                                    <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
-                                    <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
-                                    <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
-                                        <img id="heartImage" src="${localStorage.getItem('heart-' + dog.number) === 'true' ? '/serce1.png' : getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png'}" alt="Serce" class="w-8 h-auto">
-                                    </button>
-                                </div>
-                            `;
+                    <h2 class="text-2xl font-bold mb-4">${dog.name}</h2>
+                    <img src="${dog.photo}" alt="${dog.name}" class="w-full h-96 object-cover rounded-lg mb-4 rounded-b-lg"/>
+                    <div class="space-y-2 relative">
+                        <p><strong>Rasa:</strong> ${dog.race}</p>
+                        <p><strong>Kolor:</strong> ${dog.color}</p>
+                        <p><strong>Numer ID:</strong> ${dog.number}</p>
+                        <p><strong>Choroby:</strong> ${dog.illnesses || 'Zdrowy'}</p>
+                        <button class="absolute bottom-0 right-0 bg-blue-600 text-white px-4 py-2 rounded-lg mt-4 hover:bg-blue-700">Dodaj do koszyka</button>
+                        <button id="heartButton" class="absolute bottom-20 right-0 px-4 py-2 rounded-lg mt-4">
+                            <img id="heartImage" src="${isFavorite(dog.id) ? '/serce1.png' : (getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png')}" alt="Serce" class="w-8 h-auto">
+                        </button>
+                    </div>
+                `;
                 modal.style.display = 'block';
-                // Zapisz stan polubienia psa w localStorage
-                document.getElementById('heartButton').addEventListener('click', function () {
-                    var heartImage = document.getElementById('heartImage');
-                    var isLiked = localStorage.getItem('heart-' + dog.number) === 'true';
-                    var favouriteAnimals = JSON.parse(localStorage.getItem('favouriteAnimals')) || [];
-                    addFavoriteAnimal(dog.number);
-                    if (isLiked) {
-                        heartImage.src = getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png';
-                        localStorage.setItem('heart-' + dog.number, 'false');
-                        favouriteAnimals = favouriteAnimals.filter(function (animal) {
-                            return animal !== dog.number;
-                        });
-                    } else {
-                        heartImage.src = '/serce1.png';
-                        localStorage.setItem('heart-' + dog.number, 'true');
-                        if (!favouriteAnimals.includes(dog.number)) {
-                            favouriteAnimals.push(dog.number);
-                        }
-                    }
 
-                    localStorage.setItem('favouriteAnimals', JSON.stringify(favouriteAnimals));
+                // --- Heart Icon Click Handler (Inside Modal) ---
+                document.getElementById('heartButton').addEventListener('click', function () {
+                    const heartImage = document.getElementById('heartImage');
+                    if (isFavorite(dog.id)) {
+                        removeFavorite(dog.id);
+                        heartImage.src = getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png';
+                    } else {
+                        addFavorite(dog.id);
+                        heartImage.src = '/serce1.png';
+                    }
+                    showFavoriteAnimals();
+                    updateHeartIconsInList(); // Call the function here to make the list update
                 });
             });
-
             galleryContainer.appendChild(dogCard);
         });
     }
@@ -229,6 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (getCookie('darkMode') === 'true') {
             applyDarkMode();
         }
+        updateHeartIconsInList();
 
     });
 
@@ -243,37 +283,6 @@ document.addEventListener('DOMContentLoaded', function () {
             modal.style.display = 'none';
         }
     });
-});
-
-function setCookie(name, value, days) {
-    const d = new Date();
-    d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + d.toUTCString();
-    document.cookie = name + "=" + value + ";" + expires + ";path=/";
-}
-
-function getCookie(name) {
-    const cname = name + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const ca = decodedCookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(cname) == 0) {
-            return c.substring(cname.length, c.length);
-        }
-    }
-    return "";
-}
-//curl -X POST -H "Content-Type: application/json" -d '{"username": "admin", "password": "admin"}' http://localhost:5010/api/users/login
-// {
-//     "message": "Zalogowano pomy\u015blnie!",
-//     "session_key": "33637703-2b87-4d13-ab44-4829961dad75"
-//   }
-document.addEventListener('DOMContentLoaded', function () {
-
     async function getSession(username, password) {
         try {
             const response = await fetch('https://api.cwlbelchatow.nl/api/users/login', {
@@ -302,7 +311,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const loginButton = document.getElementById('login-submit');
-    const loginModal = document.getElementById('login-modal');
     loginButton.addEventListener('click', async function () {
         const username = document.getElementById('login-username').value;
         const password = document.getElementById('login-password').value;
@@ -324,5 +332,20 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
-});
 
+    function updateHeartIconsInList() {
+        const dogCards = document.querySelectorAll('.dog-card');
+        dogCards.forEach(card => {
+            const dogNameElement = card.querySelector('h2');
+            if (dogNameElement) {
+                const dog = dogsData.find(d => d.name === dogNameElement.textContent);
+                if (dog) {
+                    const heartImage = card.querySelector('#heartImage');
+                    if (heartImage) {
+                        heartImage.src = isFavorite(dog.id) ? '/serce1.png' : (getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png');
+                    }
+                }
+            }
+        });
+    }
+});

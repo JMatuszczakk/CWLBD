@@ -1,99 +1,160 @@
+// frontend_public/src/script3.js
+
 document.addEventListener('DOMContentLoaded', function () {
     const settingsButton = document.getElementById('settings-image');
     const settingsPopup = document.getElementById('settings-popup');
-    //d
-    settingsButton.addEventListener('click', function () {
-        if (settingsPopup.style.display === 'none' || settingsPopup.style.display === '') {
-            settingsPopup.style.display = 'block';
-        } else {
-            settingsPopup.style.display = 'none';
-        }
-    });
-
-    // Close the popup when clicking outside of it
-    window.addEventListener('click', function (event) {
-        if (event.target !== settingsButton && !settingsPopup.contains(event.target)) {
-            settingsPopup.style.display = 'none';
-        }
-    });
-});
-function addFavoriteAnimal(animal) {
-    const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
-    favoriteAnimals.push(animal);
-    localStorage.setItem('favoriteAnimals', JSON.stringify(favoriteAnimals));
-}
-
-function getFavoriteAnimals() {
-    return JSON.parse(localStorage.getItem('favoriteAnimals')) || []; //TODO: do zrobienia renderowanie całych obiektów
-}
-
-function printFavoriteAnimals() {
-    const favoriteAnimals = getFavoriteAnimals();
-    if (favoriteAnimals.length === 0) {
-        console.log('Brak ulubionych zwierząt.');
-    } else {
-        console.log('Ulubione zwierzęta:');
-        favoriteAnimals.forEach(animal => {
-            console.log(animal);
-        });
-    }
-}
-document.addEventListener('DOMContentLoaded', function () {
     const favoriteIcon = document.getElementById('favorite-icon');
     const favoriteAnimalsModal = document.getElementById('favorite-animals-modal');
     const closeBtns = document.querySelectorAll('.close-btn');
     const favoriteAnimalsList = document.getElementById('favorite-animals-list');
+    const loginButton = document.getElementById('login-image');
+    const loginModal = document.getElementById('login-modal');
+    const closeBtn = loginModal.querySelector('.close-btn');
 
-    favoriteIcon.addEventListener('click', function () {
-        const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals')) || [];
-
-        favoriteAnimalsList.innerHTML = '';
-
-        if (favoriteAnimals.length === 0) {
-            favoriteAnimalsList.innerHTML = '<p>Brak ulubionych zwierząt.</p>';
-        } else {
-            favoriteAnimals.forEach(animal => {
-                const animalItem = document.createElement('div');
-                animalItem.textContent = animal;
-                favoriteAnimalsList.appendChild(animalItem);
-            });
-        }
-
-        favoriteAnimalsModal.style.display = 'block';
+    // --- Settings Popup ---
+    settingsButton.addEventListener('click', function () {
+        settingsPopup.style.display = (settingsPopup.style.display === 'none' || settingsPopup.style.display === '') ? 'block' : 'none';
     });
 
+    window.addEventListener('click', function (event) {
+        if (event.target !== settingsButton && !settingsPopup.contains(event.target)) {
+            settingsPopup.style.display = 'none';
+        }
+        if (event.target === favoriteAnimalsModal) {
+            favoriteAnimalsModal.style.display = 'none';
+        }
+        if (event.target === loginModal) {
+            loginModal.style.display = 'none';
+        }
+    });
+
+    // --- Favorites Modal Logic ---
+
+    async function showFavoriteAnimals() {
+        const favoriteAnimalsList = document.getElementById('favorite-animals-list');
+        favoriteAnimalsList.innerHTML = ''; // Clear previous content
+
+        let favorites = getCookie("favorites");
+        let favoritesArray = favorites ? favorites.split(',') : [];
+
+        if (favoritesArray.length === 0) {
+            favoriteAnimalsList.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400">Brak ulubionych zwierząt.</p>';
+            favoriteAnimalsModal.style.display = 'block';
+            return;
+        }
+
+        // Check if each favorite still exists and display accordingly
+        favoritesArray.forEach(dogId => {
+            const dog = dogsData.find(d => String(d.id) === dogId);
+            const isDarkMode = getCookie('darkMode') === 'true'; // Check dark mode
+
+            // --- Conditionally Apply Classes based on isDarkMode ---
+            const bgColor = isDarkMode ? 'bg-[#333]' : 'bg-[#bad3f5]';
+            const textColor = isDarkMode ? 'text-[#ECB365]' : 'text-black';
+            const borderColor = isDarkMode ? 'border-gray-700' : 'border-gray-200';
+            const secondaryTextColor = isDarkMode ? 'text-[#a7732a]' : 'text-gray-600';
+
+            const removedBgColor = isDarkMode ? 'bg-gray-700' : 'bg-gray-100';
+            const removedBorderColor = isDarkMode ? 'border-gray-600' : 'border-gray-200';
+            const removedTextColor = isDarkMode ? 'text-gray-400' : 'text-gray-600';
+
+
+            if (dog) {
+                // Dog exists, display the dog card
+                const dogItem = document.createElement('div');
+                dogItem.classList.add('flex', 'items-center', 'mb-4', 'p-4', 'border', 'rounded-lg', 'shadow', bgColor, borderColor);
+
+                dogItem.innerHTML = `
+                    <img src="${dog.photo}" alt="${dog.name}" class="w-16 h-16 object-cover rounded-md mr-4">
+                    <div class="flex-grow">
+                        <h3 class="text-lg font-bold ${textColor}">${dog.name}</h3>
+                        <p class="text-sm ${secondaryTextColor}">${dog.race} | ${dog.color}</p>
+                    </div>
+                    <button class="remove-favorite-btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-dog-id="${dog.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                `;
+                favoriteAnimalsList.appendChild(dogItem);
+            } else {
+                // Dog no longer exists, display a message
+                const removedItem = document.createElement('div');
+                removedItem.classList.add('flex', 'items-center', 'mb-4', 'p-4', 'border', 'rounded-lg', 'shadow', removedBgColor, removedBorderColor);
+
+                removedItem.innerHTML = `
+                    <div class="flex-grow">
+                        <p class="text-sm ${removedTextColor}">To zwierzę zostało usunięte.</p>
+                    </div>
+                    <button class="remove-favorite-btn bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-dog-id="${dogId}">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                `;
+                favoriteAnimalsList.appendChild(removedItem);
+            }
+        });
+
+
+        const removeButtons = favoriteAnimalsList.querySelectorAll('.remove-favorite-btn');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const dogId = this.dataset.dogId;
+                removeFavorite(dogId);
+                showFavoriteAnimals();
+                updateHeartIconsInList();
+            });
+        });
+
+        favoriteAnimalsModal.style.display = 'block';
+    }
+
+
+    // --- Event Listeners ---
+    favoriteIcon.addEventListener('click', showFavoriteAnimals);
+
     closeBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
+        btn.addEventListener('click', () => {
             favoriteAnimalsModal.style.display = 'none';
             settingsPopup.style.display = 'none';
         });
     });
 
-    window.addEventListener('click', function (event) {
-        if (event.target === favoriteAnimalsModal) {
-            favoriteAnimalsModal.style.display = 'none';
-        }
-    });
-});
-//dupa
-window.onscroll = function () { scrollFunction() };
-
-document.addEventListener('DOMContentLoaded', function () {
-    const loginButton = document.getElementById('login-image');
-    const loginModal = document.getElementById('login-modal');
-    const closeBtn = loginModal.querySelector('.close-btn');
-
-    loginButton.addEventListener('click', function () {
+    loginButton.addEventListener('click', () => {
         loginModal.style.display = 'block';
     });
 
-    closeBtn.addEventListener('click', function () {
+    closeBtn.addEventListener('click', () => {
         loginModal.style.display = 'none';
     });
 
-    window.addEventListener('click', function (event) {
-        if (event.target === loginModal) {
-            loginModal.style.display = 'none';
+    // --- Scroll Function (Top Bar) ---
+    let prevScrollpos = window.pageYOffset;
+    window.onscroll = function () {
+        const currentScrollPos = window.pageYOffset;
+        const bar = document.getElementById("top-bar");
+        if (prevScrollpos > currentScrollPos) {
+            bar.style.top = "0";
+        } else {
+            bar.style.top = "-80px";
         }
-    });
+        prevScrollpos = currentScrollPos;
+    };
+
+    function updateHeartIconsInList() {
+        const dogCards = document.querySelectorAll('.dog-card');
+        dogCards.forEach(card => {
+            const dogNameElement = card.querySelector('h2');
+            if (dogNameElement) {
+                const dog = dogsData.find(d => d.name === dogNameElement.textContent);
+                if (dog) {
+                    const heartImage = card.querySelector('#heartImage');
+                    if (heartImage) {
+                        heartImage.src = isFavorite(dog.id) ? '/serce1.png' : (getCookie('darkMode') === 'true' ? '/serce2_c.png' : '/serce2_b.png');
+                    }
+                }
+            }
+        });
+    }
 });
