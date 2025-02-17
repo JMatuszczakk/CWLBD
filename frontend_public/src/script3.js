@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+//dupa
 window.onscroll = function () { scrollFunction() };
 
 document.addEventListener('DOMContentLoaded', function () {
